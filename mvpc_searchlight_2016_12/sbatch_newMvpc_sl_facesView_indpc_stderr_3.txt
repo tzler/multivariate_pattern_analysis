@@ -1,0 +1,29 @@
+{Error using spm_vol_spm_vol_hdr (line 80)
+File
+"/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/1_ROIs/6mm/rightFFA6mm_222/sub09_6mm_rightFFA_222.nii"
+does not exist.
+
+Error in spm_vol (line 61)
+        v = spm_vol_hdr(deblank(P(i,:)));
+
+Error in mvpc_searchlight_computations (line 11)
+seed = logical(spm_read_vols(spm_vol(subject.seedPath)));
+
+
+Error in mvpc_searchlight_singleSub (line 47)
+mvpc_searchlight_computations(subject,inputs,outputPath);
+
+
+Error in mvpc_searchlight_only (line 23)
+    mvpc_searchlight_singleSub(Cfg_searchlight.dataInfo.subjects(iSubject),Cfg_searchlight.searchlightInfo,
+    Cfg_searchlight.regionModels, Cfg_searchlight.interactionModels,
+    Cfg_searchlight.outputPath);
+
+
+Error in runSearchlight_viewpoint_indpc (line 81)
+mvpc_searchlight_only(Cfg_searchlight,Cfg_smoothing)
+
+
+Error in sbatch_newMvpc_searchlight_indpc_009 (line 3)
+ runSearchlight_viewpoint_indpc(9)
+} 

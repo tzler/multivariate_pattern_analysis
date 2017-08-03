@@ -1,0 +1,235 @@
+% Simulations with random high-dimensional data matrix
+for iIteration = 1:100
+    data = rand(50,200);
+    % calculate svd
+    [U_roi,S_roi,V_roi] = svd(data');
+    d = size(data,1);   % d is the dimensionality of the data (nVoxels)
+    true_varexpl = diag(S_roi)/sum(diag(S_roi));
+    for k = 1:d
+        % project data in run jRun on PC subspace
+        data_red_PC = data'*V_roi(:,1:k);
+        % project back in voxel space
+        data_red_vox = [data_red_PC,zeros(size(data',1),size(data',2)-k)]*V_roi';
+        varexpl_eucl(k) = max(0,euclidean_varexpl(data',data_red_vox));
+        varexpl_diagGenVar(k) = max(0,diagGenVar_varexpl(data',data_red_vox));
+        varexpl_lw(k) = max(0,ledoitWolf_varexpl(data',data_red_vox));
+%         varexpl_varPC(k) = max(0,varPC_varexpl(data',data_red_vox));
+    end
+    [maximum, k] = max(varexpl_lw);
+    if maximum>0
+        varexpl_lw_norm = varexpl_lw/maximum;
+    else
+        varexpl_lw_norm = varexpl_lw;
+    end
+    varexpl_diff_eucl = [varexpl_eucl(1),diff(varexpl_eucl)]';
+    varexpl_diff_diagGenVar = [varexpl_diagGenVar(1),diff(varexpl_diagGenVar)]';
+    varexpl_diff_lw = [varexpl_lw_norm(1),diff(varexpl_lw_norm)]';
+    error_eucl(iIteration) = (true_varexpl-varexpl_diff_eucl)'*(true_varexpl-varexpl_diff_eucl);
+    error_diagGenVar(iIteration) = (true_varexpl-varexpl_diff_diagGenVar)'*(true_varexpl-varexpl_diff_diagGenVar);
+    error_lw(iIteration) = (true_varexpl-varexpl_diff_lw)'*(true_varexpl-varexpl_diff_lw);
+end
+
+
+% Simulations with data matrix that has structure
+for iDim = 1:50
+    for iIteration = 1:10
+        data_core = rand(iDim,200);
+        A = rand(50,iDim);
+        data = A*data_core*0.9+rand(50,200)*0.1;
+        % calculate svd
+        [U_roi,S_roi,V_roi] = svd(data');
+        d = size(data,1);   % d is the dimensionality of the data (nVoxels)
+        true_varexpl = diag(S_roi)/sum(diag(S_roi));
+        for k = 1:d
+            % project data in run jRun on PC subspace
+            data_red_PC = data'*V_roi(:,1:k);
+            % project back in voxel space
+            data_red_vox = [data_red_PC,zeros(size(data',1),size(data',2)-k)]*V_roi';
+            varexpl_eucl(k) = max(0,euclidean_varexpl(data',data_red_vox));
+            varexpl_diagGenVar(k) = max(0,diagGenVar_varexpl(data',data_red_vox));
+            varexpl_lw(k) = max(0,ledoitWolf_varexpl(data',data_red_vox));
+%             dkl(k) = kldivergence(data',data_red_vox);
+    %         varexpl_varPC(k) = max(0,varPC_varexpl(data',data_red_vox));
+        end
+        [maximum_lw, k_lw(iDim,iIteration)] = max(varexpl_lw);
+        if maximum_lw>0
+            varexpl_lw_norm = varexpl_lw/maximum_lw;
+        else
+            varexpl_lw_norm = varexpl_lw;
+        end
+        [maximum_eucl(iIteration), k_eucl(iDim,iIteration)] = max(varexpl_eucl);
+        [maximum_diagGenVar(iIteration), k_diagGenVar(iDim,iIteration)] = max(varexpl_lw);
+%         [minimum_dkl(iIteration), k_dkl(iDim,iIteration)] = min(dkl);
+        errorDim_eucl(iDim,iIteration) = iDim-k_eucl(iDim,iIteration);
+        errorDim_diagGenVar(iDim,iIteration) = iDim-k_diagGenVar(iDim,iIteration);
+        errorDim_lw(iDim,iIteration) = iDim-k_lw(iDim,iIteration);
+%         errorDim(iDim,iIteration).dkl = iDim-k_dkl(iDim,iIteration);
+        varexpl_diff_eucl = [varexpl_eucl(1),diff(varexpl_eucl)]';
+        varexpl_diff_diagGenVar = [varexpl_diagGenVar(1),diff(varexpl_diagGenVar)]';
+        varexpl_diff_lw = [varexpl_lw_norm(1),diff(varexpl_lw_norm)]';
+        error_eucl(iDim,iIteration) = (true_varexpl-varexpl_diff_eucl)'*(true_varexpl-varexpl_diff_eucl);
+        error_diagGenVar(iDim,iIteration) = (true_varexpl-varexpl_diff_diagGenVar)'*(true_varexpl-varexpl_diff_diagGenVar);
+        error_lw(iDim,iIteration) = (true_varexpl-varexpl_diff_lw)'*(true_varexpl-varexpl_diff_lw);
+    end
+end
+
+% Simulations in which the data matrix has structure and we try to infer
+% the rank ordering of eigenvectors
+noises = [0.1,0.2,0.3];
+for iNoise = 1:length(noises)
+    noiseProportion = noises(iNoise); % must be between 0 and 1
+    for iDim = 1:50
+        for iIteration = 1:100
+            data_core = rand(iDim,200);
+            A = rand(50,iDim);
+            data = A*data_core*(1-noiseProportion)+rand(50,200)*noiseProportion;
+            % calculate svd
+            [U_roi,S_roi,V_roi] = svd(data');
+            d = size(data,1);   % d is the dimensionality of the data (nVoxels)
+            true_varexpl = diag(S_roi)/sum(diag(S_roi));
+%             tic
+            parfor k = 1:d
+                % project data in run jRun on PC subspace
+                data_red_PC = data'*V_roi(:,k);
+                % project back in voxel space
+                data_red_vox = [zeros(size(data',1),k-1),data_red_PC,zeros(size(data',1),size(data',2)-k)]*V_roi';
+                varexpl_eucl(k) = max(0,euclidean_varexpl(data',data_red_vox));
+                varexpl_diagGenVar(k) = max(0,diagGenVar_varexpl(data',data_red_vox));
+                varexpl_lw(k) = max(0,ledoitWolf_varexpl(data',data_red_vox));
+                r_distcorr(k) = distcorr(data',data_red_vox);
+                %             dkl(k) = kldivergence(data',data_red_vox);
+            end
+%             toc
+            spear_eucl(iNoise,iDim,iIteration) = corr(true_varexpl,varexpl_eucl','type','Spearman');
+            spear_diagGenVar(iNoise,iDim,iIteration) = corr(true_varexpl,varexpl_diagGenVar','type','Spearman');
+            spear_lw(iNoise,iDim,iIteration) = corr(true_varexpl,varexpl_lw','type','Spearman');
+            spear_distcorr(iNoise,iDim,iIteration) = corr(true_varexpl,r_distcorr','type','Spearman');
+            error_eucl(iNoise,iDim,iIteration) = dot(true_varexpl-varexpl_eucl',true_varexpl-varexpl_eucl');
+            error_diagGenVar(iNoise,iDim,iIteration) = dot(true_varexpl-varexpl_diagGenVar',true_varexpl-varexpl_diagGenVar');
+            error_lw(iNoise,iDim,iIteration) = dot(true_varexpl-varexpl_lw',true_varexpl-varexpl_lw');
+            error_distcorr(iNoise,iDim,iIteration) = dot(true_varexpl-r_distcorr',true_varexpl-r_distcorr');
+            error_distcorr2(iNoise,iDim,iIteration) = dot(true_varexpl-(r_distcorr.^2)',true_varexpl-(r_distcorr.^2)');
+        end
+        fprintf('\n noise level = %d, dim = %d \n',iNoise,iDim);
+    end
+end
+save('C:\stefano\mvpc_searchlight_2016_11_26\internalFunctions\multivariateVarexpl\simulationsSpearman','spear_eucl','spear_diagGenVar','spear_lw','spear_distcorr','-v7.3');
+
+spear_eucl_mean = mean(spear_eucl,3);
+spear_diagGenVar_mean = mean(spear_diagGenVar,3);
+spear_lw_mean = mean(spear_lw,3);
+spear_distcorr_mean = mean(spear_distcorr,3);
+
+for iNoise = 1:3
+    plot(spear_diagGenVar_mean(iNoise,:),'LineWidth',2);
+    hold on
+    plot(spear_lw_mean(iNoise,:),'red','LineWidth',2);
+    plot(spear_distcorr_mean(iNoise,:),'green','LineWidth',2);
+    ylim([0.4,1.1]);
+    ylabel('Spearman Correlation');
+    xlabel('Dimensions');
+    axes_plot = gca;
+    axes_plot.FontSize = 16;
+    legend('GenVar-diag','GenVar-LW','Distcorr','Location','southeast');
+    current_figure = gcf;
+    current_figure.Units = 'inches';
+    current_figure.PaperPosition = [0 0 8 6];
+    print(sprintf('C:\\stefano\\mvpc_searchlight_2016_11_26\\internalFunctions\\multivariateVarexpl\\spearman_%d.tiff',iNoise),'-dtiff');
+    hold off
+    close(gcf);
+end
+
+
+
+% Simulations in which the data matrix has structure and we try to infer
+% the rank ordering of eigenvectors - using random eigenvalues
+
+for iDim = 1:50
+    for iIteration = 1:100
+        eigenvalues = sort(rand(1,iDim),'descend');
+%         data_core = rand(iDim,200);
+        A = rand(50,200);
+        % calculate svd
+        [U_roi,S_roi,V_roi] = svd(A');
+        S_new_roi = [diag([eigenvalues,zeros(1,50-iDim)]);zeros(150,50)];
+        data = (U_roi*S_new_roi*V_roi')';
+        d = size(data,1);   % d is the dimensionality of the data (nVoxels)
+        true_varexpl = diag(S_new_roi)/sum(diag(S_new_roi));
+        %             tic
+        parfor k = 1:d
+            % project data in run jRun on PC subspace
+            data_red_PC = data'*V_roi(:,k);
+            % project back in voxel space
+            data_red_vox = [zeros(size(data',1),k-1),data_red_PC,zeros(size(data',1),size(data',2)-k)]*V_roi';
+            varexpl_eucl(k) = max(0,euclidean_varexpl(data',data_red_vox));
+            varexpl_diagGenVar(k) = max(0,diagGenVar_varexpl(data',data_red_vox));
+            varexpl_lw(k) = max(0,ledoitWolf_varexpl(data',data_red_vox));
+            r_distcorr(k) = distcorr(data',data_red_vox);
+            %  cross-entropy
+%             dkl(k) = kldivergence(data',data_red_vox);
+        end
+        %             toc
+        spear_eucl(iDim,iIteration) = corr(true_varexpl,varexpl_eucl','type','Spearman');
+        spear_diagGenVar(iDim,iIteration) = corr(true_varexpl,varexpl_diagGenVar','type','Spearman');
+        spear_lw(iDim,iIteration) = corr(true_varexpl,varexpl_lw','type','Spearman');
+        spear_distcorr(iDim,iIteration) = corr(true_varexpl,r_distcorr','type','Spearman');
+        error_eucl(iDim,iIteration) = dot(true_varexpl-varexpl_eucl',true_varexpl-varexpl_eucl');
+        error_diagGenVar(iDim,iIteration) = dot(true_varexpl-varexpl_diagGenVar',true_varexpl-varexpl_diagGenVar');
+        error_lw(iDim,iIteration) = dot(true_varexpl-varexpl_lw',true_varexpl-varexpl_lw');
+        error_distcorr(iDim,iIteration) = dot(true_varexpl-r_distcorr',true_varexpl-r_distcorr');
+        error_distcorr2(iDim,iIteration) = dot(true_varexpl-(r_distcorr.^2)',true_varexpl-(r_distcorr.^2)');
+    end
+    fprintf('dim = %d \n',iDim);
+end
+
+save('C:\stefano\mvpc_searchlight_2016_11_26\internalFunctions\multivariateVarexpl\simulations_goodeig_dkl','spear_eucl','spear_diagGenVar','spear_lw','spear_distcorr',...
+    'error_eucl','error_diagGenVar','error_lw','error_distcorr','error_distcorr2','-v7.3');
+
+spear_eucl_mean = nanmean(spear_eucl,2);
+spear_diagGenVar_mean = nanmean(spear_diagGenVar,2);
+spear_lw_mean = nanmean(spear_lw,2);
+spear_distcorr_mean = nanmean(spear_distcorr,2);
+error_eucl_mean = mean(error_eucl,2);
+error_diagGenVar_mean = mean(error_diagGenVar,2);
+error_lw_mean = mean(error_lw,2);
+error_distcorr_mean = mean(error_distcorr,2);
+error_distcorr2_mean = mean(error_distcorr2,2);
+
+plot(spear_eucl_mean,'yellow','LineWidth',2);
+hold on
+plot(spear_diagGenVar_mean,'LineWidth',2);
+plot(spear_lw_mean,'red','LineWidth',2);
+plot(spear_distcorr_mean,'green','LineWidth',2);
+% ylim([0.4,1.1]);
+ylabel('Spearman Correlation');
+xlabel('Dimensions');
+axes_plot = gca;
+axes_plot.FontSize = 16;
+legend('Eucl','GenVar-diag','GenVar-LW','Distcorr','Location','southeast');
+current_figure = gcf;
+current_figure.Units = 'inches';
+current_figure.PaperPosition = [0 0 8 6];
+print('C:\stefano\mvpc_searchlight_2016_11_26\internalFunctions\multivariateVarexpl\spearman.tiff','-dtiff');
+hold off
+close(gcf);
+
+plot(error_eucl_mean,'yellow','LineWidth',2);
+hold on
+plot(error_diagGenVar_mean,'LineWidth',2);
+plot(error_lw_mean,'red','LineWidth',2);
+plot(error_distcorr_mean,'green','LineWidth',2);
+plot(error_distcorr2_mean,'magenta','LineWidth',2);
+% ylim([0.4,1.1]);
+ylabel('Sum of square errors');
+xlabel('Dimensions');
+axes_plot = gca;
+axes_plot.FontSize = 16;
+legend('Eucl','GenVar-diag','GenVar-LW','Distcorr','Distcorr square','Location','southeast');
+current_figure = gcf;
+current_figure.Units = 'inches';
+current_figure.PaperPosition = [0 0 8 6];
+print('C:\stefano\mvpc_searchlight_2016_11_26\internalFunctions\multivariateVarexpl\SSE_d2.tiff','-dtiff');
+hold off
+close(gcf);
+
+

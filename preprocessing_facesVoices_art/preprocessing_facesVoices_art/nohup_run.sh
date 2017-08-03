@@ -1,0 +1,1 @@
+nohup matlab -nodesktop -nosplash -r "try, run('wrapper_preproc_EIB.m'), catch me, fprintf('%s / %s\n',me.identifier,me.message), end, exit" < /dev/null  > ../EIB_preprocess.txt &

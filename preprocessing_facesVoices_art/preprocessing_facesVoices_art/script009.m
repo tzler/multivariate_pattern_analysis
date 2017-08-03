@@ -1,0 +1,3 @@
+function script009
+cd('/mindhive/saxelab3/anzellotti/facesVoices_art2/preprocessing_facesVoices_art')
+wrapper_preproc_facesVoices_parallel_artOnly(9);

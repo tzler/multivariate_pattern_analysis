@@ -1,0 +1,52 @@
+{Error using network/train (line 340)
+Output data size does not match net.outputs{2}.size.
+
+Error in integration_nonlinear_train (line 37)
+net_nonlin = train(net_nonlin,inputs,targets);
+
+Error in mvpc_multiRegionIntegration (line 53)
+                net_nonlin =
+                integration_nonlinear_train(training_inputs_scaled',training_targets_scaled,nHiddenNodes);
+                
+Error in sbatch_run006 (line 2)
+mvpc_multiRegionIntegration(6);
+} 
+{Error using network/train (line 340)
+Output data size does not match net.outputs{2}.size.
+
+Error in integration_nonlinear_train (line 37)
+net_nonlin = train(net_nonlin,inputs,targets);
+
+Error in mvpc_multiRegionIntegration (line 53)
+                net_nonlin =
+                integration_nonlinear_train(training_inputs_scaled',training_targets_scaled,nHiddenNodes);
+                
+Error in sbatch_run004 (line 2)
+mvpc_multiRegionIntegration(4);
+} 
+{Error using network/train (line 340)
+Output data size does not match net.outputs{2}.size.
+
+Error in integration_nonlinear_train (line 37)
+net_nonlin = train(net_nonlin,inputs,targets);
+
+Error in mvpc_multiRegionIntegration (line 53)
+                net_nonlin =
+                integration_nonlinear_train(training_inputs_scaled',training_targets_scaled,nHiddenNodes);
+                
+Error in sbatch_run003 (line 2)
+mvpc_multiRegionIntegration(3);
+} 
+{Error using network/train (line 340)
+Output data size does not match net.outputs{2}.size.
+
+Error in integration_nonlinear_train (line 37)
+net_nonlin = train(net_nonlin,inputs,targets);
+
+Error in mvpc_multiRegionIntegration (line 53)
+                net_nonlin =
+                integration_nonlinear_train(training_inputs_scaled',training_targets_scaled,nHiddenNodes);
+                
+Error in sbatch_run005 (line 2)
+mvpc_multiRegionIntegration(5);
+} 

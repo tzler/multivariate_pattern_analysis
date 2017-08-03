@@ -1,0 +1,1 @@
+slurmstepd: error: *** JOB 5150096 ON node040 CANCELLED AT 2016-12-22T03:12:45 DUE TO TIME LIMIT ***

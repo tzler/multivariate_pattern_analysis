@@ -1,0 +1,170 @@
+function mvpc_searchlight_computations(subject,inputs,outputPath)
+
+%% ######## Initialize ########
+regionModels = inputs.regionModels;
+interactionModels = inputs.interactionModels;
+
+%% ######## Load functional volumes ########
+[volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(subject.functionalPaths,subject.compcorrMask,inputs.compcorr.nPCs);
+
+%% ######## Extract seed data ########
+seed = logical(spm_read_vols(spm_vol(subject.seedPath)));
+sizeSpace = size(seed,1)*size(seed,2)*size(seed,3);
+seed2 = reshape(seed,sizeSpace,1);
+
+%% ######## Apply region models to seed ########
+nRuns = length(volumes_control);
+nRegionModels = length(regionModels);
+for iRun = 1:nRuns
+    data_seed{iRun} = volumes_control{iRun}(seed2,:);
+end
+preprocessedData_seed = mvpc_applyRegionModels(data_seed,regionModels);
+clear('data_seed');
+fprintf('\nRegion models for seed region completed.\n');
+
+%% ######## Run searchlight ########
+tic
+
+nSpheres = length(inputs.coordsSpheres);
+warning('off','all')
+for iSphere = 1:nSpheres  % FOR DEBUGGING
+    %% Extract sphere data
+    thisSphere = inputs.coordsSpheres{iSphere};
+    for iRun = 1:nRuns
+        data_sphere{iRun} = volumes_control{iRun}(thisSphere,:);
+    end
+    
+    %% Apply region models to sphere
+    if any(~cell2mat(cellfun(@size,data_sphere,'UniformOutput',false)))
+        for iRegionModel = 1:nRegionModels
+            results{iRegionModel} = zeros(1);
+        end
+    else
+        preprocessedData_sphere = mvpc_applyRegionModels(data_sphere,regionModels);
+        %% Calculate mutual predictivity -- try using mldivide to see if it matters to consider covariance
+        for iRegionModel = 1:nRegionModels
+            preprocessedData{iRegionModel}{1} = preprocessedData_seed{iRegionModel};
+            preprocessedData{iRegionModel}{2} = preprocessedData_sphere{iRegionModel};
+        end
+        results = mvpc_applyInteractionModels(preprocessedData,interactionModels);
+    end
+    %     [varexpl_temp, meanVarexpl_byComp_temp, varexpl_byComp_temp] = mrtools_iconnIndep_mutualPred_byComponent(seedData_reduced,sphereData_reduced);
+    nInteractionModels = length(results);
+    for iInteractionModel = 1:nInteractionModels
+        r{iInteractionModel}(iSphere) = results{iInteractionModel};
+    end
+    if ~mod(iSphere,1000) fprintf('%d ',iSphere); end
+end
+toc
+warning('on','all')
+%% Reformat and save searchlight map
+linearIndexes = sub2ind(size(seed),inputs.I,inputs.J,inputs.K);
+% linearIndexes = linearIndexes(1:2000); % FOR DEBUGGING
+for iInteractionModel = 1:nInteractionModels
+    searchlightMap3D_r = zeros(size(seed));
+    searchlightMap3D_r(linearIndexes) = r{iInteractionModel};
+    vol_write = spm_vol(subject.functionalPaths{1}{1});
+    fname = sprintf('analysis%d_sub%02d.img',iInteractionModel,subject.ID);
+    vol_write.fname = fname;
+    dataType = spm_type('float32');
+    vol_write.dt(1) = dataType;
+    try
+        mkdir(outputPath);
+        cd(outputPath);
+        spm_write_vol(vol_write,searchlightMap3D_r);
+    catch
+        warning('Could not save results to the specified path.');
+    end
+end
+% 
+% for iRun=1:nRuns
+%     % multivariate_varexpl
+%     linearIndexes = sub2ind(size(seed),I,J,K);
+%     searchlightMap3D_varexpl = zeros(size(seed));
+%     searchlightMap3D_varexpl(linearIndexes) = varexpl(:,iRun);    
+%     vol_write = spm_vol(volumePaths{1}{1});
+%     fname = sprintf('v_multidim_sub%s_run%d.img',string,iRun);
+%     vol_write.fname = fname;
+%     dataType = spm_type('float32');
+%     vol_write.dt(1) = dataType;
+%     try
+%         cd(outputFolder);
+%         spm_write_vol(vol_write,searchlightMap3D_varexpl);
+%     catch
+%         warning('Could not save results to the specified path.');
+%     end
+%     searchlightMap3D_r = zeros(size(seed));
+%     searchlightMap3D_r(linearIndexes) = r(:,iRun);
+%     vol_write = spm_vol(volumePaths{1}{1});
+%     fname = sprintf('r_multidim_sub%s_run%d.img',string,iRun);
+%     vol_write.fname = fname;
+%     dataType = spm_type('float32');
+%     vol_write.dt(1) = dataType;
+%     try
+%         cd(outputFolder);
+%         spm_write_vol(vol_write,searchlightMap3D_r);
+%     catch
+%         warning('Could not save results to the specified path.');
+%     end
+%     clear('searchlightMap3D_varexpl','searchlightMap3D_r');
+%     % mean componentwise varexpl
+%     linearIndexes = sub2ind(size(seed),I,J,K);
+%     searchlightMap3D_varexpl = zeros(size(seed));
+%     searchlightMap3D_varexpl(linearIndexes) = varexpl_meanByComp(:,iRun);    
+%     vol_write = spm_vol(volumePaths{1}{1});
+%     fname = sprintf('v_meanCompWise_sub%s_run%d.img',string,iRun);
+%     vol_write.fname = fname;
+%     dataType = spm_type('float32');
+%     vol_write.dt(1) = dataType;
+%     try
+%         cd(outputFolder);
+%         spm_write_vol(vol_write,searchlightMap3D_varexpl);
+%     catch
+%         warning('Could not save results to the specified path.');
+%     end
+%     searchlightMap3D_r = zeros(size(seed));
+%     searchlightMap3D_r(linearIndexes) = r_meanByComp(:,iRun);
+%     vol_write = spm_vol(volumePaths{1}{1});
+%     fname = sprintf('r_meanCompWise_sub%s_run%d.img',string,iRun);
+%     vol_write.fname = fname;
+%     dataType = spm_type('float32');
+%     vol_write.dt(1) = dataType;
+%     try
+%         cd(outputFolder);
+%         spm_write_vol(vol_write,searchlightMap3D_r);
+%     catch
+%         warning('Could not save results to the specified path.');
+%     end
+%     clear('searchlightMap3D_varexpl','searchlightMap3D_r');
+%     for iPC = 1:nPCs
+%         % componentwise varexpl
+%         linearIndexes = sub2ind(size(seed),I,J,K);
+%         searchlightMap3D_varexpl = zeros(size(seed));
+%         searchlightMap3D_varexpl(linearIndexes) = varexpl_byComp(:,iRun,iPC);    
+%         vol_write = spm_vol(volumePaths{1}{1});
+%         fname = sprintf('v_compWise_sub%s_run%d_PC%d.img',string,iRun,iPC);
+%         vol_write.fname = fname;
+%         dataType = spm_type('float32');
+%         vol_write.dt(1) = dataType;
+%         try
+%             cd(outputFolder);
+%             spm_write_vol(vol_write,searchlightMap3D_varexpl);
+%         catch
+%             warning('Could not save results to the specified path.');
+%         end
+%         searchlightMap3D_r = zeros(size(seed));
+%         searchlightMap3D_r(linearIndexes) = r_byComp(:,iRun,iPC);
+%         vol_write = spm_vol(volumePaths{1}{1});
+%         fname = sprintf('r_compWise_sub%s_run%d_PC%d.img',string,iRun,iPC);
+%         vol_write.fname = fname;
+%         dataType = spm_type('float32');
+%         vol_write.dt(1) = dataType;
+%         try
+%             cd(outputFolder);
+%             spm_write_vol(vol_write,searchlightMap3D_r);
+%         catch
+%             warning('Could not save results to the specified path.');
+%         end
+%         clear('searchlightMap3D_varexpl','searchlightMap3D_r');
+%     end
+% end

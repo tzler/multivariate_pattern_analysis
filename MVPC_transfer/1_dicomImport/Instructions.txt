@@ -1,0 +1,31 @@
+Prepare nifti
+==dicomImport_EIB_pulldata.sh
+	moves the data files from remote to local
+==dicomImport_EIB_anatPopulate.m
+	builds EIBanat.mat file that tells next script which run is MPRAGE. There is issue in subject SAX_EIB_67 report, actual anatomical is run 10, just like all of the rest of the subjects.
+==dicomImport_EIB_MVPC.m
+	generates nifti for runs indicated in EIB_subject_taskruns.mat and EIBanat.mat
+
+
+To paralyze subjects using slurm
+
+==sbatch_genScripts.m
+	generates individual sbatch scripts for every subject with a folder in the project data folder (e.g. ‘sbatch_run001.m’)
+==sbatch_parallel.sh
+	call with ‘sbatch sbatch_parallel.sh’. in turn calls ‘sbatch_single.sh’ the indicated number of time (-n 30 in this case)
+==sbatch_single.sh
+	places the next ‘sbatch_run###.m’ script on the next available node
+==sbatch_run###.m
+	calls ‘wrapper_preproc_EIB_parallel.m’ for indicated subject ### (1-30 for EIB)
+==wrapper_preproc_EIB_parallel.m
+	populates Cfg_preproc variable for indicated subject and passes the variable to ‘spmBatch_masterscript_connectivity.m’
+==spmBatch_masterscript_connectivity.m
+	executes spm_batch commands, ART, etc.
+
+
+To run subjects in serial using nohup
+
+==Run singlethread preprocessing
+==nohub_run.sh
+==wrapper_preproc_EIB.m
+

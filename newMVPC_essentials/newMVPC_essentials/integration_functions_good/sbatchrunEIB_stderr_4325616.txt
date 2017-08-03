@@ -1,0 +1,1 @@
+slurmstepd: error: *** JOB 4325616 ON node001 CANCELLED AT 2016-11-27T01:19:05 DUE TO TIME LIMIT ***

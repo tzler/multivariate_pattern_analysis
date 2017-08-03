@@ -1,0 +1,212 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+ 
+ 
+ 
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+For product information, visit www.mathworks.com.
+ 
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+	Academic License
+
+
+	Academic License
+
+
+	Academic License
+
+
+	Academic License
+
+
+Populating Cfg variable...
+Populating Cfg variable...
+Populating Cfg variable...
+Populating Cfg variable... Done.
+ Done.
+ Done.
+ Done.
+
+Region models for seed region completed.
+
+Region models for seed region completed.
+
+Region models for seed region completed.
+
+Region models for seed region completed.
+1000 1000 1000 1000 2000 2000 2000 2000 3000 3000 3000 3000 4000 4000 4000 4000 5000 5000 5000 5000 6000 6000 6000 6000 7000 7000 7000 7000 8000 8000 8000 8000 9000 9000 9000 9000 10000 10000 10000 10000 11000 11000 11000 11000 12000 12000 12000 12000 13000 13000 13000 13000 14000 14000 14000 14000 15000 15000 15000 15000 16000 16000 16000 16000 17000 17000 17000 17000 18000 18000 18000 18000 19000 19000 19000 19000 20000 20000 20000 20000 21000 21000 21000 21000 22000 22000 22000 22000 23000 23000 23000 23000 24000 24000 24000 24000 25000 25000 25000 25000 26000 26000 26000 26000 27000 27000 27000 27000 28000 28000 28000 28000 29000 29000 29000 29000 30000 30000 30000 30000 31000 31000 31000 31000 32000 32000 32000 32000 33000 33000 33000 33000 34000 34000 34000 34000 35000 35000 35000 36000 35000 36000 36000 37000 36000 37000 37000 38000 37000 38000 38000 39000 39000 38000 39000 40000 40000 39000 40000 41000 41000 40000 41000 42000 42000 41000 42000 43000 43000 42000 43000 44000 44000 43000 44000 45000 45000 44000 45000 46000 46000 45000 46000 47000 47000 46000 47000 48000 48000 47000 48000 49000 49000 48000 49000 50000 50000 49000 50000 51000 51000 50000 51000 52000 52000 51000 52000 53000 53000 52000 53000 54000 54000 53000 54000 55000 55000 54000 55000 56000 56000 55000 56000 57000 57000 56000 57000 58000 58000 57000 58000 59000 59000 58000 59000 60000 60000 59000 60000 61000 61000 60000 62000 61000 62000 61000 63000 62000 63000 62000 64000 63000 64000 63000 65000 64000 65000 64000 66000 65000 66000 65000 67000 66000 67000 66000 68000 68000 67000 67000 69000 69000 68000 68000 70000 70000 69000 69000 71000 71000 70000 70000 72000 72000 71000 71000 73000 73000 72000 72000 74000 74000 73000 73000 75000 75000 74000 74000 76000 76000 75000 75000 77000 77000 76000 76000 78000 78000 77000 77000 79000 79000 78000 78000 80000 80000 79000 79000 81000 81000 80000 80000 82000 82000 81000 81000 83000 83000 82000 82000 84000 84000 83000 83000 85000 85000 84000 84000 86000 86000 85000 85000 87000 87000 86000 86000 88000 88000 87000 87000 89000 89000 88000 88000 90000 90000 89000 89000 91000 91000 90000 90000 92000 92000 91000 91000 93000 93000 92000 92000 94000 94000 93000 93000 95000 95000 94000 94000 96000 96000 95000 95000 97000 97000 96000 96000 98000 98000 97000 97000 99000 99000 98000 98000 100000 100000 99000 99000 101000 101000 100000 102000 100000 102000 101000 103000 101000 103000 102000 104000 102000 104000 103000 105000 103000 105000 104000 106000 104000 106000 105000 107000 105000 107000 106000 108000 106000 108000 107000 109000 109000 107000 110000 108000 110000 108000 111000 109000 111000 109000 112000 110000 112000 110000 113000 111000 113000 111000 114000 112000 114000 112000 115000 113000 115000 113000 116000 114000 116000 114000 117000 115000 117000 115000 118000 116000 118000 116000 119000 117000 119000 117000 120000 118000 120000 118000 121000 119000 121000 119000 122000 120000 122000 120000 123000 121000 123000 121000 124000 122000 124000 122000 125000 123000 125000 123000 126000 126000 124000 124000 127000 127000 125000 125000 Elapsed time is 126414.493446 seconds.
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_008 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_008 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_008 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_008 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_008 (line 3)] 
+
+ Searchlight completed in 1.264160e+05 seconds.
+ Results map saved to /mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_uni
+Finished connectivity calculations for subject 1
+Your MATLAB session has timed out.  All license keys have been returned.
+Elapsed time is 126443.322310 seconds.
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_007 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_007 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_007 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_007 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_007 (line 3)] 
+
+ Searchlight completed in 1.264447e+05 seconds.
+ Results map saved to /mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_uni
+Finished connectivity calculations for subject 1
+Your MATLAB session has timed out.  All license keys have been returned.
+126000 126000 127000 127000 Elapsed time is 127591.266694 seconds.
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_005 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_005 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_005 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_005 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_005 (line 3)] 
+
+ Searchlight completed in 1.275925e+05 seconds.
+ Results map saved to /mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_uni
+Finished connectivity calculations for subject 1
+Your MATLAB session has timed out.  All license keys have been returned.
+Elapsed time is 127788.197577 seconds.
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_006 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_006 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_006 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_006 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_006 (line 3)] 
+
+ Searchlight completed in 1.277893e+05 seconds.
+ Results map saved to /mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_uni
+Finished connectivity calculations for subject 1
+Your MATLAB session has timed out.  All license keys have been returned.

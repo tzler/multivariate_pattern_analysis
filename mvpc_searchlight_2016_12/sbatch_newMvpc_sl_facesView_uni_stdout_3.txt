@@ -1,0 +1,68 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2015 The MathWorks, Inc.
+                   R2015a (8.5.0.197613) 64-bit (glnxa64)
+                             February 12, 2015
+
+ 
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+
+
+	Academic License
+
+	Academic License
+
+
+Populating Cfg variable...
+Populating Cfg variable... Done.
+ Done.
+
+Region models for seed region completed.
+1000 2000 3000 4000 5000 6000 7000 8000 9000 10000 11000 12000 13000 14000 15000 16000 17000 18000 19000 20000 21000 22000 23000 24000 25000 26000 27000 28000 29000 30000 31000 32000 33000 34000 35000 36000 37000 38000 39000 40000 41000 42000 43000 44000 45000 46000 47000 48000 49000 50000 51000 52000 53000 54000 55000 56000 57000 58000 59000 60000 61000 62000 63000 64000 65000 66000 67000 68000 69000 70000 71000 72000 73000 74000 75000 76000 77000 78000 79000 80000 81000 82000 83000 84000 85000 86000 87000 88000 89000 90000 91000 92000 93000 94000 95000 96000 97000 98000 99000 100000 101000 102000 103000 104000 105000 106000 107000 108000 109000 110000 111000 112000 113000 114000 115000 116000 117000 118000 119000 120000 121000 122000 123000 124000 125000 126000 127000 Elapsed time is 74750.358927 seconds.
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_010 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_010 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_010 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_010 (line 3)] 
+[Warning: Directory already exists.] 
+[> In mvpc_searchlight_computations (line 89)
+  In mvpc_searchlight_singleSub (line 47)
+  In mvpc_searchlight_only (line 23)
+  In runSearchlight_viewpoint_uni (line 117)
+  In sbatch_newMvpc_searchlight_uni_010 (line 3)] 
+
+ Searchlight completed in 7.475237e+04 seconds.
+ Results map saved to /mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_uni
+Finished connectivity calculations for subject 1
+Your MATLAB session has timed out.  All license keys have been returned.
