@@ -33,7 +33,7 @@ for iSphere = 1:length(I)
     end
 end
 clear('coordsSpheres');
-inputs.compcorr.nPCs = searchlightInfo.compcorr.nPCs;
+inputs.compcorr = searchlightInfo.compcorr;
 inputs.coordsSpheres = coordsSpheresInd;
 inputs.searchSpace = searchSpace;
 inputs.I = I;

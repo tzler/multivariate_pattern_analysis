@@ -33,6 +33,30 @@ catch
     exit_script = 1;
     return
 end
+
+if strcmp(Cfg_searchlight.searchlightInfo.compcorr.includeMotionRegressors,'yes')
+    try
+    nSubjects = length(Cfg_mvpcRoi.dataInfo.subjects);
+    for iSubject = 1:nSubjects
+        nRuns = length(Cfg_mvpcRoi.dataInfo.subjects(iSubject).functionalDirs);
+        for iRun = 1:nRuns
+            volumesFolder = Cfg_mvpcRoi.dataInfo.subjects(iSubject).functionalDirs{iRun};
+            cd(volumesFolder);
+            motionRegressorFileInfo = dir('rp*');
+            if length(motionRegressorFileInfo)>1	    
+                  fprintf('There are too many motion regressor files.');
+            end
+            Cfg_mvpcRoi.dataInfo.subjects(iSubject).motionRegressorsPaths{iRun} = fullfile(volumesFolder,motionRegressorFileInfo.name);
+        end
+    end
+    catch
+        fprintf(' Failed generating paths to the motion regressors.\n');
+        exit_script = 1;
+    return
+
+end
+
+    
 % 
 % 
 % % generate paths to the regions of interest

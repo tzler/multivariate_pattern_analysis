@@ -1,4 +1,8 @@
-function [volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(volumePaths,controlPath,nPCs)
+function [volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(subject,compCorrParams)
+
+volumePaths = subject.functionalPaths;
+controlPath = subject.compCorrMask;
+nPCs = compCorrParams.nPCs;
 
 %% Load data and remove noise using compcorr
 nRuns = length(volumePaths);
@@ -8,6 +12,7 @@ for iRun = 1:nRuns
     for iVolume = 1:nVolumes
         volumes(:,:,:,iVolume) = spm_read_vols(spm_vol(volumePaths{iRun}{iVolume})); % Load volume
     end
+    globalSignal = squeeze(mean(mean(mean(volumes,3),2),1));
     % reshape volumes
     sizeVolumeSpace = size(volumes);
     volumes2 = reshape(volumes,sizeVolumeSpace(1)*sizeVolumeSpace(2)*sizeVolumeSpace(3),sizeVolumeSpace(4));
@@ -27,9 +32,14 @@ for iRun = 1:nRuns
     [U_control,S_control,V_control] = svd(controlData_center');
     % extract scores for the PCs that account for most variance
     controlData_reduced = (U_control(:,1:nPCs)*S_control(1:nPCs,1:nPCs))';
+
+    % if requested, load motion regressors
+    if strcmp(Cfg_searchlight.searchlightInfo.compcorr.includeMotionRegressors,'yes')
+	    motionRegressors = load(subject.motionRegressorsPaths{iRun})
+    end					  
     % for each voxel in the brain regress out the PCs in the control
     % data
-    X = [ones(nVolumes,1) controlData_reduced'];
+    X = [ones(nVolumes,1) controlData_reduced' motionRegressors globalSignal];
     Y = volumes2';
     b = mldivide(X,Y);
     R = Y-X*b;
