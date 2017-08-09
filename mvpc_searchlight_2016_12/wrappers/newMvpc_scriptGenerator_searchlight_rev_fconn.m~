@@ -1,4 +1,4 @@
-function newMvpc_scriptGenerator_searchlight_mul(nSubjects,scriptDir,mvpcDir,parameters)
+function newMvpc_scriptGenerator_searchlight_rev_fconn(nSubjects,scriptDir,mvpcDir,parameters)
 
 nNodes = ceil(nSubjects/parameters.slurm.cores_per_node);
 

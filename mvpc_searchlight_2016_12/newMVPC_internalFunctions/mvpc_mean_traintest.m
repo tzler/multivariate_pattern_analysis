@@ -1,6 +1,7 @@
 function data_mean = mvpc_mean_traintest(parameters,data)
 
 % center the runs, important for leave-one run-out prediction
+nRuns = length(data);
 for iRun = 1:nRuns
     data_center{iRun} = data{iRun} - repmat(mean(data{iRun},2),1,size(data{iRun},2));
 end

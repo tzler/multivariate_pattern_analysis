@@ -1,0 +1,10 @@
+{Attempted to access subjects_temp(10); index out of bounds because
+numel(subjects_temp)=9.
+
+Error in runSearchlight_viewpoint_rev (line 15)
+subjects = subjects_temp(iSubject);
+
+
+Error in sbatch_newMvpc_searchlight_rev_010 (line 3)
+ runSearchlight_viewpoint_rev(10)
+} 

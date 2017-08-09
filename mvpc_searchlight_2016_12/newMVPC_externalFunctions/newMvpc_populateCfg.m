@@ -3,7 +3,6 @@ function [Cfg_mvpcRoi, exit_script] = newMvpc_populateCfg(Cfg_mvpcRoi)
 fprintf('\nPopulating Cfg variable...');
 exit_script = 0;
 
-
 % generate paths to the functional volumes
 try
     nSubjects = length(Cfg_mvpcRoi.dataInfo.subjects);
@@ -28,6 +27,7 @@ try
                     outliers.out_idx = find(sum(outliers.R,2));
                     [nVolumes,nOutliers] = size(outliers.R);
                     volumesSelect(outliers.out_idx) = [];
+Cfg_mvpcRoi.dataInfo.subjects(iSubject).outliers{iRun} = outliers.out_idx;
                 else
                     warning('\nNo motion file located, Subject: %d, run: %d\n', iSubject, iRun);
                 end
@@ -66,6 +66,32 @@ catch
     exit_script = 1;
     return
 end
+
+
+% If requested, generate paths to motion regressors
+
+if strcmp(Cfg_mvpcRoi.searchlightInfo.compcorr.includeMotionRegressors,'yes')
+    try
+    nSubjects = length(Cfg_mvpcRoi.dataInfo.subjects);
+    for iSubject = 1:nSubjects
+        nRuns = length(Cfg_mvpcRoi.dataInfo.subjects(iSubject).functionalDirs);
+        for iRun = 1:nRuns
+            volumesFolder = Cfg_mvpcRoi.dataInfo.subjects(iSubject).functionalDirs{iRun};
+            cd(volumesFolder);
+            motionRegressorFileInfo = dir('rp*');
+            if length(motionRegressorFileInfo)>1	    
+                  fprintf('There are too many motion regressor files.');
+            end
+            Cfg_mvpcRoi.dataInfo.subjects(iSubject).motionRegressorsPaths{iRun} = fullfile(volumesFolder,motionRegressorFileInfo.name);
+        end
+    end
+    catch
+        fprintf(' Failed generating paths to the motion regressors.\n');
+        exit_script = 1;
+        return
+    end
+end
+
 
 
 % locate subject compcorr mask

@@ -1,7 +1,7 @@
 function [volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(subject,compCorrParams)
 
 volumePaths = subject.functionalPaths;
-controlPath = subject.compCorrMask;
+controlPath = subject.compcorrMask;
 nPCs = compCorrParams.nPCs;
 
 %% Load data and remove noise using compcorr
@@ -34,8 +34,9 @@ for iRun = 1:nRuns
     controlData_reduced = (U_control(:,1:nPCs)*S_control(1:nPCs,1:nPCs))';
 
     % if requested, load motion regressors
-    if strcmp(Cfg_searchlight.searchlightInfo.compcorr.includeMotionRegressors,'yes')
-	    motionRegressors = load(subject.motionRegressorsPaths{iRun})
+    if strcmp(compCorrParams.includeMotionRegressors,'yes')
+	    motionRegressors = load(subject.motionRegressorsPaths{iRun});
+	    motionRegressors(subject.outliers{iRun},:) = [];
     end					  
     % for each voxel in the brain regress out the PCs in the control
     % data

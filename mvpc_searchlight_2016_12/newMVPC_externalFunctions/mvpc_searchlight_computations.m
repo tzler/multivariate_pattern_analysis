@@ -5,7 +5,7 @@ regionModels = inputs.regionModels;
 interactionModels = inputs.interactionModels;
 
 %% ######## Load functional volumes ########
-[volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(subject.functionalPaths,subject.compcorrMask,inputs.compcorr.nPCs);
+[volumes_control,sizeVolumeSpace] = mvpc_load_compcorr(subject,inputs.compcorr);
 
 %% ######## Extract seed data ########
 seed = logical(spm_read_vols(spm_vol(subject.seedPath)));
@@ -74,7 +74,7 @@ toc
 warning('on','all')
 %% Reformat and save searchlight map
 linearIndexes = sub2ind(size(seed),inputs.I,inputs.J,inputs.K);
-% linearIndexes = linearIndexes(1:2851); % FOR DEBUGGING
+% linearIndexes = linearIndexes(1:100); % FOR DEBUGGING
 for iInteractionModel = 1:nInteractionModels
     nStatistics = length(r{iInteractionModel});
     for iStatistic = 1:nStatistics

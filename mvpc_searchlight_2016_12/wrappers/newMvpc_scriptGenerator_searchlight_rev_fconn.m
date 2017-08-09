@@ -1,4 +1,4 @@
-function newMvpc_scriptGenerator_searchlight_mul(nSubjects,scriptDir,mvpcDir,parameters)
+function newMvpc_scriptGenerator_searchlight_rev_fconn(nSubjects,scriptDir,mvpcDir,parameters)
 
 nNodes = ceil(nSubjects/parameters.slurm.cores_per_node);
 
@@ -9,7 +9,7 @@ for iNode = 1:nNodes
 nTasks = min(parameters.slurm.cores_per_node,nSubjects-(iNode-1)*parameters.slurm.cores_per_node);
 
 cd(scriptDir);
-fid = fopen(sprintf('sbatch_newMvpc_parallel_searchlight_rev_%d.sh',iNode),'wt');
+fid = fopen(sprintf('sbatch_newMvpc_parallel_searchlight_rev_fconn_%d.sh',iNode),'wt');
 
 fprintf(fid,'#!/bin/bash\n');
 fprintf(fid,'#SBATCH --job-name=%s\n', parameters.slurm.name);  % Project Name
@@ -24,8 +24,8 @@ fprintf(fid,'module add openmpi/gcc/64/1.8.1\n');
 fprintf(fid,'module add mit/matlab/2015a\n');
 fprintf(fid,'cd %s\n',scriptDir);
 fprintf(fid,'\n');
-fprintf(fid,'chmod +x sbatch_newMvpc_single_searchlight_rev_%d.sh\n',iNode);
-fprintf(fid,'mpiexec -n %d ./sbatch_newMvpc_single_searchlight_rev_%d.sh',nTasks,iNode);
+fprintf(fid,'chmod +x sbatch_newMvpc_single_searchlight_rev_fconn_%d.sh\n',iNode);
+fprintf(fid,'mpiexec -n %d ./sbatch_newMvpc_single_searchlight_rev_fconn_%d.sh',nTasks,iNode);
 
 fclose(fid);
 
@@ -33,11 +33,11 @@ fclose(fid);
 %% Single file
 
 cd(scriptDir);
-fid = fopen(sprintf('sbatch_newMvpc_single_searchlight_rev_%d.sh',iNode),'wt');
+fid = fopen(sprintf('sbatch_newMvpc_single_searchlight_rev_fconn_%d.sh',iNode),'wt');
     
 fprintf(fid,'#!/bin/bash\n');
 fprintf(fid,'\n');
-fprintf(fid,['file_num=sbatch_newMvpc_searchlight_rev_$(printf ' char(34) '%s' char(34) ' $(($OMPI_COMM_WORLD_RANK + 1 + %d)))\n'],'%03d',(iNode-1)*parameters.slurm.cores_per_node);
+fprintf(fid,['file_num=sbatch_newMvpc_searchlight_rev_fconn_$(printf ' char(34) '%s' char(34) ' $(($OMPI_COMM_WORLD_RANK + 1 + %d)))\n'],'%03d',(iNode-1)*parameters.slurm.cores_per_node);
 fprintf(fid,['matlab -nodisplay -nosplash -singleCompThread -r ' char(34) '$file_num' char(34) '\n']);
 fprintf(fid,'exit\n');
 fprintf(fid,'\n');
@@ -50,11 +50,11 @@ end
 
 cd(scriptDir);
 for iSubject = 1:nSubjects
-        scriptName = sprintf('sbatch_newMvpc_searchlight_rev_%03d.m',iSubject);
+        scriptName = sprintf('sbatch_newMvpc_searchlight_rev_fconn_%03d.m',iSubject);
         fid = fopen(scriptName,'wt');
         fprintf(fid,'function  %s',scriptName(1:end-2));
         fprintf(fid,'\n cd(''%s'')', mvpcDir);
-        fprintf(fid,'\n runSearchlight_viewpoint_rev(%d)',iSubject);
+        fprintf(fid,'\n runSearchlight_viewpoint_rev_fconn(%d)',iSubject);
         fclose(fid);
 end
 
