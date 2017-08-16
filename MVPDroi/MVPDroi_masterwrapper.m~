@@ -66,7 +66,7 @@ for iNode = 1:10
 end
 
 % ######### Set output folders ########
-output_main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2';
+output_main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2/MVPDtests';
 Cfg_MVPDroi.outputPaths.regionModels = fullfile(output_main,'regionModels');
 Cfg_MVPDroi.outputPaths.interactionModels = fullfile(output_main,'interactionModels');
 Cfg_MVPDroi.outputPaths.products = fullfile(output_main,'products');
@@ -74,12 +74,6 @@ Cfg_MVPDroi.outputPaths.cfgPath = fullfile(Cfg_MVPDroi.outputPaths.products,'Cfg
 
 % ######## Check file existence, make output directories, save Cfg file ########
 MVPDroi_setenv(Cfg_MVPDroi);
-
-% ########## Terminate if errors were encountered ############
-if exit_script
-    error('Errors encoutered. Not generating scripts.');
-    return
-end
 
 %% Make parallel scripts for preprocessing
 

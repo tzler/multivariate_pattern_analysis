@@ -4,10 +4,8 @@ function MVPDroi_regionModels(cfgPath,iSubject)
 
 % ########### Set paths ##########
 load(cfgPath);
-% set workspace paths
-addpath(Cfg_MVPDroi.dataInfo.project);
 % set function paths
-addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpc));
+addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 addpath(genpath(Cfg_MVPDroi.libraryPaths.spm12));
 rmpath(genpath(fullfile(Cfg_MVPDroi.libraryPaths.spm12,'external')));
 
