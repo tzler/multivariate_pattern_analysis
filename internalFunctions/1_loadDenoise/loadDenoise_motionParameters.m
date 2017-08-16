@@ -2,8 +2,8 @@ function volumes2 = loadDenoise_motionParameters(parameters, subject, volumes2,i
 
 if isfield(subject,'motionRegressorsPaths')
     motionRegressors = load(subject.motionRegressorsPaths{iRun});
-    if isfield(subject,'outlierPaths')
-        outliers = load(subject.outlierPaths{iRun});   
+    if isfield(subject,'outliersPaths')
+        outliers = load(subject.outliersPaths{iRun});   
         motionRegressors(subject.outliers{iRun},:) = [];
     end
     nVolumes = size(volumes2,2);
