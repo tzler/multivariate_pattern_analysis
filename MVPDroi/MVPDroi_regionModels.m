@@ -7,8 +7,6 @@ load(cfgPath);
 % set function paths
 addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 addpath(genpath(Cfg_MVPDroi.libraryPaths.spm12));
-addpath(genpath(Cfg_MVPDroi.libraryPaths.signal));
-addpath(genpath(Cfg_MVPDroi.libraryPaths.shared));
 rmpath(genpath(fullfile(Cfg_MVPDroi.libraryPaths.spm12,'external')));
 
 % ######### Simplify variable names ########

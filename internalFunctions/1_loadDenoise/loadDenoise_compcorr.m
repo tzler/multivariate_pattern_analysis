@@ -6,7 +6,7 @@ controlROI = logical(spm_read_vols(spm_vol(controlPath)));
 volumes_control = zeros(size(volumes2));
 nVoxRoi = size(controlROI,1)*size(controlROI,2)*size(controlROI,3);
 if nVoxRoi~=size(volumes2,1)
-    warning('\nNumber of voxels in compcorr mask does not match the number of functional voxels.');
+    warning('Number of voxels in compcorr mask does not match the number of functional voxels.');
 end
 controlROI2 = reshape(controlROI,nVoxRoi,1);
 controlData = volumes2(controlROI2,:);
