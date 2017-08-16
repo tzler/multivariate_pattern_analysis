@@ -18,5 +18,7 @@ for iRun = 1:nRuns
     for iStep = 1:nSteps
         volumes2 = feval(preprocModels.steps(iStep).functionHandle,preprocModels.steps(iStep).parameters,subject,volumes2,iRun);
     end   
+    volumes_control{iRun} = volumes2;
+    clear('volumes2');
 end
 sizeVolumeSpace(4) = [];

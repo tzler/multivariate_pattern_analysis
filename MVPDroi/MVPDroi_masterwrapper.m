@@ -7,6 +7,8 @@
 % ######## Specify and add library paths ########
 Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab3/anzellotti/github_repos/mvpd';
 Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
+Cfg_MVPDroi.libraryPaths.signal = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/signal';
+Cfg_MVPDroi.libraryPaths.shared = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/shared';
 addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 
 % ########## Specify inputs ###########

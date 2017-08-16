@@ -14,7 +14,7 @@ if size(globalSignal,2)>1
     globalSignal = globalSignal';
 end
 nVolumes = size(volumes2,2);
-regressors_NI = [ones(nVolumes,1),controlData_reduced];
+regressors_NI = [ones(nVolumes,1),globalSignal];
 Y = volumes2';
 clear('volumes2');
 b = mldivide(regressors_NI,Y);
