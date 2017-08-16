@@ -5,33 +5,18 @@
 %% Initialize general parameters
 
 % ######## Specify and add library paths ########
-Cfg_MVPDroi.dataInfo.data = '/mindhive/saxelab3/anzellotti/facesVoices_art2/4_preprocessedData_PSF';
 Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab3/anzellotti/github_repos/mvpd';
 Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
-% set function paths
 addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 
 % ########## Specify inputs ###########
-% set regressors filter
-Cfg_MVPDroi.dataInfo.regressorRunFilter = 'motion_outliers_only_*.mat';
-Cfg_MVPDroi.dataInfo.regressorTotalFilter = 'motion_total_*.mat';
-% set functional filter
-Cfg_MVPDroi.dataInfo.functionalFilter = 'swaf*.img';
-% set anatomical filters
-Cfg_MVPDroi.dataInfo.anatDirName = 'anatomy1';
-Cfg_MVPDroi.dataInfo.compcorrFilter = 'mask_combWMCSF_*.nii';
-% set motion filters
-Cfg_MVPDroi.dataInfo.motionDirName = 'motion';
-Cfg_MVPDroi.dataInfo.totalMotionFilter = 'motion_total_*.mat';
-% set subject data info
-Cfg_MVPDroi.dataInfo.subjects = mvpd_generateFullDataPaths_facesVoices_art2;
-Cfg_MVPDroi.dataInfo.outliersFilter = 'outlie*.txt';
-Cfg_MVPDroi.dataInfo.includeMotionRegressors = 'yes';
+Cfg_MVPDroi.dataInfo.subjects = generateFullDataPaths_example;
 
 % ######## Preprocessing and region models #######
 % preprocessing model
 Cfg_MVPDroi.preprocModels.steps(1).functionHandle = 'loadDenoise_compcorr';
 Cfg_MVPDroi.preprocModels.steps(1).parameters.nPCs = 5;
+
 % region model with low pass filtering
 Cfg_MVPDroi.regionModels(1).label = 'mean_lowPass0.1';
 Cfg_MVPDroi.regionModels(1).steps(1).functionHandle = 'regionModel_mean';
@@ -77,36 +62,15 @@ for iNode = 1:10
     Cfg_MVPDroi.interactionModels(3+iNode).parameters.nNodes = iNode;
 end
 
-%% Initialize ROI-analysis parameters
-
-% ######## set ROIs ########
-% set ROI filter for mvpd_populateCfg
-Cfg_MVPDroi.dataInfo.roiFilter = '*.img';
-% specify paths to the folders containing the ROIs
-nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-for iSubject = 1:nSubjects
-    Cfg_MVPDroi.dataInfo.subjects(iSubject).roiDir = fullfile(Cfg_MVPDroi.dataInfo.subjects(iSubject).subjectPath,'ROIs');
-end
-% specify ROI names
-Cfg_MVPDroi.dataInfo.regionLabels = {'rFFA','lFFA','rSTS','lSTS','rATL','lATL','PCvis','vmPFC','rpSTG','lpSTG','rmSTG','rmSTG','raSTG','raSTG','PCaud'};
-
-% ################## Populate Cfg ###############
-Cfg_MVPDroi.dataInfo.expungeVols = true;
-Cfg_MVPDroi.dataInfo.expungeRuns = true;
-Cfg_MVPDroi.dataInfo.expungeRunsThreshold = 2/3; % discard runs with > 2/3 scrubbed volumes
-[exit_script, Cfg_MVPDroi] = MVPDroi_populateCfg(Cfg_MVPDroi);
-
 % ######### Set output folders ########
-Cfg_MVPDroi.outputPaths.main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2';
-Cfg_MVPDroi.outputPaths.regionModels = fullfile(Cfg_MVPDroi.dataInfo.project,'regionModels');
-Cfg_MVPDroi.outputPaths.interactionModels = fullfile(Cfg_MVPDroi.dataInfo.project,'interactionModels');
-Cfg_MVPDroi.outputPaths.products = fullfile(Cfg_MVPDroi.outputPaths.main,'products');
+output_main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2';
+Cfg_MVPDroi.outputPaths.regionModels = fullfile(output_main,'regionModels');
+Cfg_MVPDroi.outputPaths.interactionModels = fullfile(output_main,'interactionModels');
+Cfg_MVPDroi.outputPaths.products = fullfile(output_main,'products');
 Cfg_MVPDroi.outputPaths.cfgPath = fullfile(Cfg_MVPDroi.outputPaths.products,'Cfg_MVPDroi');
 
-% ######## Check file existence, make output directories ########
-if ~exit_script
-    exit_script = MVPDroi_check_makedirs(Cfg_MVPDroi);
-end
+% ######## Check file existence, make output directories, save Cfg file ########
+MVPDroi_setenv(Cfg_MVPDroi);
 
 % ######## Save Cfg to file ##############
 save(Cfg_MVPDroi.outputPaths.cfgPath,'Cfg_MVPDroi','-v7.3');

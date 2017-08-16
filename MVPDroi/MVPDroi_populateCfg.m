@@ -63,62 +63,6 @@ catch
     return
 end
 
-%% If requested, generate paths to motion regressors
-
-if strcmp(Cfg_MVPDroi.dataInfo.includeMotionRegressors,'yes')
-    try
-    nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-    for iSubject = 1:nSubjects
-        nRuns = length(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalDirs);
-        for iRun = 1:nRuns
-            volumesFolder = Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalDirs{iRun};
-            cd(volumesFolder);
-            motionRegressorFileInfo = dir('rp*');
-            if length(motionRegressorFileInfo)>1	    
-                  fprintf('There are too many motion regressor files.');
-            end
-            Cfg_MVPDroi.dataInfo.subjects(iSubject).motionRegressorsPaths{iRun} = fullfile(volumesFolder,motionRegressorFileInfo.name);
-        end
-    end
-    catch
-        fprintf(' Failed generating paths to the motion regressors.\n');
-        exit_script = 1;
-        return
-    end
-end
-
-%% locate subject compcorr mask
-try
-    nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-    for iSubject = 1:nSubjects
-        Cfg_MVPDroi.dataInfo.subjects(iSubject).anatPath = fullfile(Cfg_MVPDroi.dataInfo.subjects(iSubject).subjectPath,Cfg_MVPDroi.dataInfo.anatDirName);
-        cd(Cfg_MVPDroi.dataInfo.subjects(iSubject).anatPath);
-        mask_temp = dir(Cfg_MVPDroi.dataInfo.compcorrFilter);
-        Cfg_MVPDroi.dataInfo.subjects(iSubject).compcorrMask = fullfile(pwd,mask_temp(1).name);
-    end
-catch
-    fprintf(' Failed generating paths to the motion regression mask.\n');
-    exit_script = 1;
-    return
-end
-
-
-%% calculate second level motion regressor
-try
-    nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-    for iSubject = 1:nSubjects
-        Cfg_MVPDroi.dataInfo.subjects(iSubject).motionPath = fullfile(Cfg_MVPDroi.dataInfo.subjects(iSubject).subjectPath,Cfg_MVPDroi.dataInfo.motionDirName);
-        cd(Cfg_MVPDroi.dataInfo.subjects(iSubject).motionPath);
-        var_temp = dir(Cfg_MVPDroi.dataInfo.totalMotionFilter);
-        load(var_temp(1).name); % loads 'Regressor' variable
-    end
-catch
-    fprintf(' Failed generating paths to the motion regression variable.\n');
-    exit_script = 1;
-    return
-end
-
-
 % generate paths to the regions of interest
 if ~isempty(Cfg_MVPDroi.dataInfo.subjects(1).roiDir)
     try
@@ -161,22 +105,6 @@ for idx1 = 1:length(Cfg_MVPDroi.interactionModels)
     if ~isfield(Cfg_MVPDroi.interactionModels(idx1),'parameters')
         Cfg_MVPDroi.interactionModels(idx1).parameters = [];
     end
-end
-
-try
-    nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-    for iSubject = 1:nSubjects
-        nRuns = length(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalDirs);
-        for iRun = 1:nRuns
-            Cfg_MVPDroi.dataInfo.motionStats.retainedDataRun(iSubject,iRun) = numel(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalPaths{iRun});
-            Cfg_MVPDroi.dataInfo.motionStats.retainedDataSubject(iSubject).mean = mean(Cfg_MVPDroi.dataInfo.motionStats.retainedDataRun(iSubject,:),2);
-            Cfg_MVPDroi.dataInfo.motionStats.retainedDataSubject(iSubject).variance = var(Cfg_MVPDroi.dataInfo.motionStats.retainedDataRun(iSubject,:),0,2);
-        end
-    end
-catch
-    fprintf(' Failed generating motion statistics.\n');
-    exit_script = 1;
-    return
 end
 
 

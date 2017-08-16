@@ -1,4 +1,4 @@
-function exit_script = MVPDroi_check_makedirs(Cfg_MVPDroi)
+function exit_script = MVPDroi_setenv(Cfg_MVPDroi)
 
 % This function creates the folders where the results will be saved and
 % checks that all the file paths exist.
