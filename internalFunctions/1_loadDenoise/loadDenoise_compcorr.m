@@ -22,5 +22,5 @@ regressors_NI = [ones(nVolumes,1),controlData_reduced];
 Y = volumes2';
 clear('volumes2');
 b = mldivide(regressors_NI,Y);
-R = Y-X*b;
+R = Y-regressors_NI*b;
 volumes2 = R';
