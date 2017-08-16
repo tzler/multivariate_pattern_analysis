@@ -12,14 +12,14 @@ for iSubject = 1:length(subjects)
     subjectPath = sprintf('/mindhive/saxelab3/anzellotti/facesVoices_art2/4_preprocessedData_PSF/sub%02d',subjects(iSubject));
     for iRun = 1:nRuns
         dataFolderName{iSubject,iRun} = sprintf('run%d',iRun);
-        functionalDir = fullfile(subjectInfo(iSubject).subjectPath,dataFolderName{iSubject,iRun});
-        cd(functionalDir);
+        subjectInfo(iSubject).functionalDirs{iRun} = fullfile(subjectPath,dataFolderName{iSubject,iRun});
+        cd(subjectInfo(iSubject).functionalDirs{iRun});
         filenames = dir(functionalFilter);
         nVolumes = numel(filenames);
         for iVolume = 1:nVolumes
-            subjectInfo(iSubject).functionalPaths{iRun}{iVolume,1} = fullfile(functionalDir,filenames(volumesSelect(iVolume)).name);
+            subjectInfo(iSubject).functionalPaths{iRun}{iVolume,1} = fullfile(functionalDir,filenames(iVolume).name);
         end
-        clear('functionalDir','filenames','nVolumes');
+        clear('filenames','nVolumes');
         
     end
     % generate paths to the regions of interest
