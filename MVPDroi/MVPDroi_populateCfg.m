@@ -65,7 +65,7 @@ end
 
 %% If requested, generate paths to motion regressors
 
-if strcmp(Cfg_MVPDroi.searchlightInfo.compcorr.includeMotionRegressors,'yes')
+if strcmp(Cfg_MVPDroi.dataInfo.includeMotionRegressors,'yes')
     try
     nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
     for iSubject = 1:nSubjects

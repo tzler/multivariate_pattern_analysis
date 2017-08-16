@@ -6,7 +6,7 @@
 
 % ######## Specify and add library paths ########
 Cfg_MVPDroi.dataInfo.data = '/mindhive/saxelab3/anzellotti/facesVoices_art2/4_preprocessedData_PSF';
-Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab3/anzellotti/facesVoices_art2/MVPDlib/';
+Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab3/anzellotti/github_repos/mvpd';
 Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
 % set function paths
 addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
@@ -25,6 +25,8 @@ Cfg_MVPDroi.dataInfo.motionDirName = 'motion';
 Cfg_MVPDroi.dataInfo.totalMotionFilter = 'motion_total_*.mat';
 % set subject data info
 Cfg_MVPDroi.dataInfo.subjects = mvpd_generateFullDataPaths_facesVoices_art2;
+Cfg_MVPDroi.dataInfo.outliersFilter = 'outlie*.txt';
+Cfg_MVPDroi.dataInfo.includeMotionRegressors = 'yes';
 
 % ######## Preprocessing and region models #######
 % preprocessing model
@@ -43,7 +45,7 @@ Cfg_MVPDroi.regionModels(2).steps(1).functionHandle = 'regionModel_mean_traintes
 Cfg_MVPDroi.regionModels(3).label = 'PCA_noLowPass';
 Cfg_MVPDroi.regionModels(3).steps(1).functionHandle = 'regionModel_indepPCA_BIC';
 Cfg_MVPDroi.regionModels(3).steps(1).parameters.minPCs = 3;
-Cfg_MVPDroi.regionModels(3).steps(1).parameters.maxPCs = 20;
+Cfg_MVPDroi.regionModels(3).steps(1).parameters.maxPCs = 10;
 
 % ############# Interaction Models #############
 % functional connectivity with low-pass
