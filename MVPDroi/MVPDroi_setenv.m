@@ -3,67 +3,64 @@ function exit_script = MVPDroi_setenv(Cfg_MVPDroi)
 % This function creates the folders where the results will be saved and
 % checks that all the file paths exist.
 
+%% Check inputs
 exit_script = 0;
-%% Check functional volumes
-
-fprintf('\nChecking functional volumes...');
-nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-for iSubject = 1:nSubjects
-    nRuns = length(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalPaths);
-    for iRun = 1:nRuns
-        for iFile = 1:length(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalPaths{iRun})
-            if exist(Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalPaths{iRun}{iFile},'file')~=2
-               fprintf('\n%s could not be found or is not a file.\n',Cfg_MVPDroi.dataInfo.subjects(iSubject).functionalPaths{iRun}{iFile});
+fprintf('\nChecking input paths...');
+subjectFields = fieldnames(Cfg_MVPDroi.dataInfo.subjects);
+for iField =1:length(subjectFields)
+   if ~isempty(strfind(subjectFields{iField},'Path'))
+       temp = Cfg_MVPDroi.dataInfo.subjects.(subjectFields{iField});
+       allPaths = extractmycells(temp);
+       for iFile = 1:length(allPaths)
+           if exist(allPaths{iFile},'file')~=2
+               fprintf('\n%s could not be found or is not a file.\n',allPaths{iFile});
                exit_script = 1;
-            end
-        end
-    end
-end
-fprintf(' Done.\n');
-
-%% Check ROIs
-
-fprintf('\nChecking ROIs...');
-for iSubject = 1:nSubjects
-if isfield(Cfg_MVPDroi.dataInfo.subjects(iSubject),'compcorrMask')
-    if exist(Cfg_MVPDroi.dataInfo.subjects(iSubject).compcorrMask,'file')~=2
-        fprintf('\n%s could not be found or is not a file.\n',Cfg_MVPDroi.dataInfo.subjects(iSubject).compcorrMask);
-        exit_script = 1;
-    end
-else
-    fprintf('WARNING: Control ROI for compcorr not specified!');
-    exit_script = 1;
-end
-end
-for iSubject = 1:nSubjects
-    nRois = length(Cfg_MVPDroi.dataInfo.subjects(iSubject).roiPaths);
-    for iRoi = 1:nRois
-        if exist(Cfg_MVPDroi.dataInfo.subjects(iSubject).roiPaths{iRoi},'file')~=2
-            fprintf('\n%s could not be found or is not a file.\n',Cfg_MVPDroi.dataInfo.subjects(iSubject).roiPaths{iRoi});
-            exit_script = 1;
-        end
-    end
+           end
+       end
+       clear('temp','allPaths');
+   end
 end
 fprintf(' Done.\n');
 
 %% Make output folders if needed
-if exist(Cfg_MVPDroi.outputPaths.regionModels_base,'dir')~=7
-    fprintf('\nMaking region models folder at %s\n', Cfg_MVPDroi.outputPaths.regionModels_base);
+fprintf('\nMaking output paths...');
+if exist(Cfg_MVPDroi.outputPaths.regionModels,'dir')~=7
+    fprintf('\nMaking region models folder at %s\n', Cfg_MVPDroi.outputPaths.regionModels);
     try
-        mkdir(Cfg_MVPDroi.outputPaths.regionModels_base);
+        mkdir(Cfg_MVPDroi.outputPaths.regionModels);
     catch
         fprintf('\nCould not create region models folder. Check permissions.\n');
         exit_script = 1;
     end
 end
-if exist(Cfg_MVPDroi.outputPaths.interactionModels_base,'dir')~=7
-    fprintf('\nMaking figures folder at %s\n', Cfg_MVPDroi.outputPaths.interactionModels_base);
+if exist(Cfg_MVPDroi.outputPaths.interactionModels,'dir')~=7
+    fprintf('\nMaking interaction models folder at %s\n', Cfg_MVPDroi.outputPaths.interactionModels);
     try
-        mkdir(Cfg_MVPDroi.outputPaths.interactionModels_base);
+        mkdir(Cfg_MVPDroi.outputPaths.interactionModels);
     catch
         fprintf('\nCould not create interaction models folder. Check permissions.\n');
         exit_script = 1;
     end
+end
+if exist(Cfg_MVPDroi.outputPaths.products,'dir')~=7
+    fprintf('\nMaking products folder at %s\n', Cfg_MVPDroi.outputPaths.products);
+    try
+        mkdir(Cfg_MVPDroi.outputPaths.products);
+    catch
+        fprintf('\nCould not create products folder. Check permissions.\n');
+        exit_script = 1;
+    end
+end
+fprintf(' Done.\n');
+
+%% Save Cfg file
+fprintf('\nSaving Cfg file...');
+try
+    save(Cfg_MVPDroi.outputPaths.cfgPath,'Cfg_MVPDroi','-v7.3');
+    fprintf(' Done.\n');
+catch
+    fprintf('Could not save Cfg file. Check permissions.');
+    exit_script = 1;
 end
 
 %% Finish

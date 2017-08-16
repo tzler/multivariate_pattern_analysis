@@ -12,12 +12,12 @@ for iSubject = 1:length(subjects)
     subjectPath = sprintf('/mindhive/saxelab3/anzellotti/facesVoices_art2/4_preprocessedData_PSF/sub%02d',subjects(iSubject));
     for iRun = 1:nRuns
         dataFolderName{iSubject,iRun} = sprintf('run%d',iRun);
-        subjectInfo(iSubject).functionalDirs{iRun} = fullfile(subjectPath,dataFolderName{iSubject,iRun});
-        cd(subjectInfo(iSubject).functionalDirs{iRun});
+        functionalDirs{iSubject}{iRun} = fullfile(subjectPath,dataFolderName{iSubject,iRun});
+        cd(functionalDirs{iSubject}{iRun});
         filenames = dir(functionalFilter);
         nVolumes = numel(filenames);
         for iVolume = 1:nVolumes
-            subjectInfo(iSubject).functionalPaths{iRun}{iVolume,1} = fullfile(functionalDir,filenames(iVolume).name);
+            subjectInfo(iSubject).functionalPaths{iRun}{iVolume,1} = fullfile(functionalDirs{iSubject}{iRun},filenames(iVolume).name);
         end
         clear('filenames','nVolumes');
         
@@ -39,16 +39,16 @@ compcorrFilter = 'mask_combWMCSF_*.nii';
 for iSubject = 1:length(subjects)
     % Optional field specifying outliers to be scrubbed from the data
     for iRun = 1:nRuns
-        cd(subjectInfo(iSubject).functionalDirs{iRun});
+        cd(functionalDirs{iSubject}{iRun});
         filenames = dir(outliersFilter);
-        subjectInfo(iSubject).outliersPaths = fullfile(subjectInfo(iSubject).functionalDirs{iRun},filenames(1).name);
+        subjectInfo(iSubject).outliersPaths{iRun} = fullfile(functionalDirs{iSubject}{iRun},filenames(1).name);
         clear('filenames');
     end
     % Optional field specifying motion parameters to be used as regressors of no interest
     for iRun = 1:nRuns
-        cd(subjectInfo(iSubject).functionalDirs{iRun});
+        cd(functionalDirs{iSubject}{iRun});
         filenames = dir(motionRegressorsFilter);
-        subjectInfo(iSubject).motionRegressorsPaths = fullfile(subjectInfo(iSubject).functionalDirs{iRun},filenames(1).name);
+        subjectInfo(iSubject).motionRegressorsPaths{iRun} = fullfile(functionalDirs{iSubject}{iRun},filenames(1).name);
         clear('filenames');
     end   
     % Optional field specifying path to mask of no interest for CompCorr
