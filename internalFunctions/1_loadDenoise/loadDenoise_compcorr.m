@@ -1,12 +1,12 @@
-function controlData_reduced = loadDenoise_compcorr(parameters, subject, volumes2)
+function volumes2 = loadDenoise_compcorr(parameters,subject,volumes2,iRun)
 
 nPCs = parameters.nPCs;
-controlPath = subject.compcorrMask;
+controlPath = subject.compcorrMaskPaths;
 controlROI = logical(spm_read_vols(spm_vol(controlPath)));
-volumes_control{iRun} = zeros(size(volumes2));
+volumes_control = zeros(size(volumes2));
 nVoxRoi = size(controlROI,1)*size(controlROI,2)*size(controlROI,3);
-if nVoxRoi ~=(sizeVolumeSpace(1)*sizeVolumeSpace(2)*sizeVolumeSpace(3))
-        fprintf('WARNING: size of control ROI and size of functional volumes do not match.');
+if nVoxRoi~=size(volumes2,1)
+    warning('\nNumber of voxels in compcorr mask does not match the number of functional voxels.');
 end
 controlROI2 = reshape(controlROI,nVoxRoi,1);
 controlData = volumes2(controlROI2,:);
@@ -16,3 +16,11 @@ controlData_center = controlData - repmat(mean(controlData,2),1,size(controlData
 [U_control,S_control,V_control] = svd(controlData_center');
 % extract scores for the PCs that account for most variance
 controlData_reduced = U_control(:,1:nPCs)*S_control(1:nPCs,1:nPCs);
+% make regressors of no interest
+nVolumes = size(volumes2,2);
+regressors_NI = [ones(nVolumes,1),controlData_reduced];
+Y = volumes2';
+clear('volumes2');
+b = mldivide(regressors_NI,Y);
+R = Y-X*b;
+volumes2 = R';

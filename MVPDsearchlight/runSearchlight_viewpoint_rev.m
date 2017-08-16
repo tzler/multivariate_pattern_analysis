@@ -1,87 +1,88 @@
-function runSearchlight_viewpoint_rev(iSubject)
+function runSearchlight(iSubject)
 
-% ######## Specify project folder path ########
-Cfg_searchlight.dataInfo.project = '/mindhive/saxelab3/anzellotti/facesViewpoint';
+%% Initialize general parameters
 
-% ######## Specify library paths ########
-Cfg_searchlight.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
-Cfg_searchlight.libraryPaths.mrtools = '/mindhive/saxelab3/anzellotti/facesViewpoint/MVPC_scripts_revision/mvpc_searchlight_2016_12';
-Cfg_searchlight.libraryPaths.signal = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/signal/signal';
-Cfg_searchlight.libraryPaths.stats = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/stats/stats';
-addpath(genpath(Cfg_searchlight.libraryPaths.mrtools));
+% ######## Specify and add library paths ########
+Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab3/anzellotti/github_repos/mvpd';
+Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
+addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 
-% ######## Provide subject information ########
-subjects_temp = [1:8,10];
-subjects = subjects_temp(iSubject);
-subjectTemplatePath = '/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/sub%02d';
-runTemplatePath = '/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/sub%02d/run%d';
-nRuns = 3;
-seedTemplatePath = '/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/1_ROIs/6mm/rightFFA6mm_222/sub%02d_6mm_rightFFA_222.nii';
-searchSpaceTemplatePath = '/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/meanGray_discrete.nii';
-compcorrMaskTemplatePath = '/mindhive/saxelab3/anzellotti/facesViewpoint/2_data_preproc/sub%02d/anatomy1/mask_combWMCSF_sub%02d.nii';
-% generate full paths to the volume directories
-Cfg_searchlight.dataInfo.subjects = mvpc_generateFullDataPaths_facesViewpoint(subjects,subjectTemplatePath,runTemplatePath,nRuns,seedTemplatePath,searchSpaceTemplatePath,compcorrMaskTemplatePath); % THIS FUNCTION NEEDS TO BE CHANGED FOR DIFFERENT PROJECTS
-Cfg_searchlight.dataInfo.functionalFilter = 'swaf*.img';
-Cfg_searchlight.dataInfo.anatDirName = 'anatomy1';
-Cfg_searchlight.dataInfo.compcorrFilter = 'mask_combWMCSF_*.nii';
+% ########## Specify inputs ###########
+subjects = generateFullDataPaths_example;
+Cfg_MVPDroi.dataInfo.subjects = subjects(iSubject);
+
+% ######## Preprocessing and region models #######
+% preprocessing model
+Cfg_MVPDroi.preprocModels.steps(1).functionHandle = 'loadDenoise_scrub';
+Cfg_MVPDroi.preprocModels.steps(2).functionHandle = 'loadDenoise_compcorr';
+Cfg_MVPDroi.preprocModels.steps(2).parameters.nPCs = 5;
+Cfg_MVPDroi.preprocModels.steps(3).functionHandle = 'loadDenoise_globalSignal';
+Cfg_MVPDroi.preprocModels.steps(4).functionHandle = 'loadDenoise_motionParameters';
+
+% region model with low pass filtering
+Cfg_MVPDroi.regionModels(1).label = 'mean_lowPass0.1';
+Cfg_MVPDroi.regionModels(1).steps(1).functionHandle = 'regionModel_mean';
+Cfg_MVPDroi.regionModels(1).steps(2).functionHandle = 'regionModel_lowPass';
+Cfg_MVPDroi.regionModels(1).steps(2).parameters.lowPassFrequencyHz = 0.1;
+Cfg_MVPDroi.regionModels(1).steps(2).parameters.TR = 2;
+% preprocessing without low pass filtering
+Cfg_MVPDroi.regionModels(2).label = 'mean_noLowPass';
+Cfg_MVPDroi.regionModels(2).steps(1).functionHandle = 'regionModel_mean_traintest';
+% preprocessing without low pass filtering
+Cfg_MVPDroi.regionModels(3).label = 'PCA_noLowPass';
+Cfg_MVPDroi.regionModels(3).steps(1).functionHandle = 'regionModel_indepPCA_BIC';
+Cfg_MVPDroi.regionModels(3).steps(1).parameters.minPCs = 3;
+Cfg_MVPDroi.regionModels(3).steps(1).parameters.maxPCs = 10;
+
+% ############# Interaction Models #############
+% functional connectivity with low-pass
+Cfg_MVPDroi.interactionModels(1).label = 'fconn_lowPass0.1';
+Cfg_MVPDroi.interactionModels(1).regionModel = 1;
+Cfg_MVPDroi.interactionModels(1).functionHandle = 'interactionModel_y_equal_x';
+Cfg_MVPDroi.interactionModels(1).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDroi.interactionModels(1).parameters.measureHandle{2} = 'accuracy_rSquare';
+% functional connectivity without low-pass filtering
+Cfg_MVPDroi.interactionModels(2).label = 'fconn_noLowPass';
+Cfg_MVPDroi.interactionModels(2).regionModel = 2;
+Cfg_MVPDroi.interactionModels(2).functionHandle = 'interactionModel_correlation';
+Cfg_MVPDroi.interactionModels(2).functionHandle = 'interactionModel_y_equal_x';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare';
+% linear multivariate connectivity
+Cfg_MVPDroi.interactionModels(3).label = 'iconn_noLowPass';
+Cfg_MVPDroi.interactionModels(3).regionModel = 3;
+Cfg_MVPDroi.interactionModels(3).functionHandle = 'interactionModel_lin';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
+Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
+% non-linear multivariate connectivity
+for iNode = 1:10
+    Cfg_MVPDroi.interactionModels(3+iNode).label = sprintf('mvpd_nnet%02d',iNode);
+    Cfg_MVPDroi.interactionModels(3+iNode).regionModel = 3;
+    Cfg_MVPDroi.interactionModels(3+iNode).functionHandle = 'interactionModel_nn';
+    Cfg_MVPDroi.interactionModels(3+iNode).parameters.nNodes = iNode;
+end
+
+% ######### Set output folders ########
+output_main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2';
+Cfg_MVPDroi.outputPaths.regionModels = fullfile(output_main,'regionModels');
+Cfg_MVPDroi.outputPaths.interactionModels = fullfile(output_main,'interactionModels');
+Cfg_MVPDroi.outputPaths.products = fullfile(output_main,'products');
+Cfg_MVPDroi.outputPaths.cfgPath = fullfile(Cfg_MVPDroi.outputPaths.products,'Cfg_MVPDroi');
+
+% ######## Check file existence, make output directories, save Cfg file ########
+MVPDroi_setenv(Cfg_MVPDroi);
+
 
 % ######## Set parameters ########
  % path of a ROI to use as search space
 Cfg_searchlight.searchlightInfo.voxelSize = [2 2 2]; % voxel size in mm
 Cfg_searchlight.searchlightInfo.sphereRadius = 6; % radius in mm
 Cfg_searchlight.searchlightInfo.compcorr.nPCs = 5;
-Cfg_searchlight.searchlightInfo.compcorr.includeMotionRegressors='yes';
 
 Cfg_searchlight.outputPath = '/mindhive/saxelab3/anzellotti/facesViewpoint/searchlight_results_rev';
 
-% ### Region Models ###
-% region model for mvpc 1-3 dimensions
-% for iDim = 1:3
-%    Cfg_searchlight.regionModels(iDim).seed.label = sprintf('PCA_noLowPass_%02ddim',iDim);
-%     % Cfg_searchlight.regionModels(2).steps(1).functionHandle = 'mvpc_demean';
-%     Cfg_searchlight.regionModels(iDim).seed.steps(1).functionHandle = 'mvpc_indepPCA_BIC_weights_V';
-%     Cfg_searchlight.regionModels(iDim).seed.steps(1).parameters.minPCs = iDim;
-%     Cfg_searchlight.regionModels(iDim).seed.steps(1).parameters.maxPCs = iDim;
-%     Cfg_searchlight.regionModels(iDim).spheres = Cfg_searchlight.regionModels(iDim).seed;
-% end
-Cfg_searchlight.regionModels(1).seed.label = sprintf('PCA_noLowPass_BIC');
-Cfg_searchlight.regionModels(1).seed.steps(1).functionHandle = 'mvpc_indepPCA_BIC_weights_V';
-Cfg_searchlight.regionModels(1).seed.steps(1).parameters.minPCs = 3;
-Cfg_searchlight.regionModels(1).seed.steps(1).parameters.maxPCs = 10;
-Cfg_searchlight.regionModels(1).spheres = Cfg_searchlight.regionModels(1).seed;
-Cfg_searchlight.regionModels(2).seed.label = sprintf('PCA_noLowPass_BIC_demean');
-Cfg_searchlight.regionModels(2).seed.steps(1).functionHandle = 'mvpc_demean';
-Cfg_searchlight.regionModels(2).seed.steps(2).functionHandle = 'mvpc_indepPCA_BIC_weights_V';
-Cfg_searchlight.regionModels(2).seed.steps(2).parameters.minPCs = 3;
-Cfg_searchlight.regionModels(2).seed.steps(2).parameters.maxPCs = 10;
-Cfg_searchlight.regionModels(2).spheres = Cfg_searchlight.regionModels(2).seed;
-
-% ### Interaction Models ###
-
-% linear multivariate connectivity
-for iModel = 1:2
-    Cfg_searchlight.interactionModels(iModel).label = sprintf('loo_%02d',iModel);
-    Cfg_searchlight.interactionModels(iModel).regionModel = iModel;
-    Cfg_searchlight.interactionModels(iModel).functionHandle = 'mvpc_multipleLinearRegression_indPCA_sl_weighted_V';
-    Cfg_searchlight.interactionModels(iModel).parameters = [];
-end
-
-% ### Postprocessing parameters ###
-Cfg_smoothing.smoothingKernel = [2 2 2];
-
-% set regressors filter 
-Cfg_searchlight.dataInfo.regressorRunFilter = 'motion_outliers_only_*.mat'; 
-Cfg_searchlight.dataInfo.regressorTotalFilter = 'motion_total_*.mat';
-% set motion filters
-Cfg_searchlight.dataInfo.motionDirName = 'motion';
-Cfg_searchlight.dataInfo.totalMotionFilter = 'motion_total_*.mat';
-
-
-% ######## Populate Cfg ########
-Cfg_searchlight.dataInfo.expungeVols = true;
-Cfg_searchlight.dataInfo.expungeRuns = true;
-Cfg_searchlight.dataInfo.expungeRunsThreshold = 2/3; % discard runs with > 2/3 scrubbed volumes
-[Cfg_searchlight, exit_script] = newMvpc_populateCfg(Cfg_searchlight);
 
 % ######## Sanity checks ########
 

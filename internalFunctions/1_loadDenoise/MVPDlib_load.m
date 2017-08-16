@@ -15,16 +15,8 @@ for iRun = 1:nRuns
     clear('volumes');
     %% Generate regressors of no interests
     nSteps = length(preprocModels.steps);
-    regressorsNI = ones(nVolumes,1);
     for iStep = 1:nSteps
-	temp = feval(preprocModels.steps(iStep).functionHandle,preprocModels.steps(iStep).parameters,subject,volumes2);
-        regressorsNI = [regressorsNI,temp];
-        clear('temp');
-    end
-    Y = volumes2';
-    clear('volumes2');
-    b = mldivide(regressors_NI,Y);
-    R = Y-X*b;
-    volumes_control{iRun} = R';
+        volumes2 = feval(preprocModels.steps(iStep).functionHandle,preprocModels.steps(iStep).parameters,subject,volumes2,iRun);
+    end   
 end
 sizeVolumeSpace(4) = [];

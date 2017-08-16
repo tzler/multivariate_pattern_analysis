@@ -1,4 +1,22 @@
-function motionParameters = loadDenoise_motionParameters(parameters, subject, volumes2)
+function volumes2 = loadDenoise_motionParameters(parameters, subject, volumes2,iRun)
 
-motionRegressors = load(subject.motionRegressorsPaths{iRun});
-motionRegressors(subject.outliers{iRun},:) = [];
+if isfield(subject,'motionRegressorsPaths')
+    motionRegressors = load(subject.motionRegressorsPaths{iRun});
+    if isfield(subject,'outlierPaths')
+        outliers = load(subject.outlierPaths{iRun});   
+        motionRegressors(subject.outliers{iRun},:) = [];
+    end
+    nVolumes = size(volumes2,2);
+    if size(motionRegressors,1)~=nVolumes
+       warning('\nThe number of motion regressors does not match the number of functional volumes.') 
+    end
+    % make regressors of no interest
+    regressors_NI = [ones(nVolumes,1),motionRegressors];
+    Y = volumes2';
+    clear('volumes2');
+    b = mldivide(regressors_NI,Y);
+    R = Y-X*b;
+    volumes2 = R';
+else
+   warning('\n Outlier paths not specified.') 
+end
