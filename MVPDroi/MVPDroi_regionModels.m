@@ -15,6 +15,24 @@ preprocModels = Cfg_MVPDroi.preprocModels;
 regionModels = Cfg_MVPDroi.regionModels;
 outputPath = Cfg_MVPDroi.outputPaths.regionModels;
 
+% add empty parameter fields for preprocModel functions that do not need
+% parameters
+for j = 1:length(preprocModels.steps)
+    if ~isfield(preprocModels.steps(j),'parameters')
+        preprocModels.steps(j).parameters = [];
+    end
+end
+% add empty parameter fields for regionModel functions that do not need
+% parameters
+for i = 1:length(regionModels)
+    for j = 1:length(regionModels(i).steps)
+        if ~isfield(regionModels(i).steps(j),'parameters')
+            regionModels(i).steps(j).parameters = [];
+        end
+    end
+end
+
+
 % ######## Load data ########
 [volumes_control,sizeVolumeSpace] = MVPDlib_load(subject,preprocModels);
 

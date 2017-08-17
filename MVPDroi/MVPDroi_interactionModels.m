@@ -16,6 +16,13 @@ interactionModel = Cfg_MVPDroi.interactionModels(iAnalysis);
 regionModelName = sprintf('sub%s_rmodel%02d',subject.ID,interactionModel.regionModel);
 regionModel = load(fullfile(Cfg_MVPDroi.outputPaths.regionModel,regionModelName));
 
+% add empty parameter fields for interactionModel functions that do not need
+% parameters
+if ~isfield(interactionModel,'parameters')
+    interactionModel.parameters = [];
+end
+
+
 % ######## Estimate and assess interaction model ########
 nRois = length(regionModel.preprocdata);
 for iRoi = 1:nRois

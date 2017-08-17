@@ -4,7 +4,7 @@ if isfield(subject,'motionRegressorsPaths')
     motionRegressors = load(subject.motionRegressorsPaths{iRun});
     if isfield(subject,'outliersPaths')
         outliers = load(subject.outliersPaths{iRun});   
-        motionRegressors(subject.outliers{iRun},:) = [];
+        motionRegressors(outliers,:) = [];
     end
     nVolumes = size(volumes2,2);
     if size(motionRegressors,1)~=nVolumes

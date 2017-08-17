@@ -31,7 +31,7 @@ Cfg_MVPDroi.regionModels(2).label = 'mean_noLowPass';
 Cfg_MVPDroi.regionModels(2).steps(1).functionHandle = 'regionModel_mean_traintest';
 % preprocessing without low pass filtering
 Cfg_MVPDroi.regionModels(3).label = 'PCA_noLowPass';
-Cfg_MVPDroi.regionModels(3).steps(1).functionHandle = 'regionModel_indepPCA_BIC';
+Cfg_MVPDroi.regionModels(3).steps(1).functionHandle = 'regionModel_indepPCA_BIC_weights_V';
 Cfg_MVPDroi.regionModels(3).steps(1).parameters.minPCs = 3;
 Cfg_MVPDroi.regionModels(3).steps(1).parameters.maxPCs = 10;
 
