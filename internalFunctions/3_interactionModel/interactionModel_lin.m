@@ -27,19 +27,20 @@ for iRun = 1:nRuns
     
     % Predict left out data
     if ~sum(sum(isnan(beta{iRun})))
-        prediction{iRun} = [ones(size(sphereData_test,2),1),sphereData_test']*beta{iRun};
+        prediction_temp = [ones(size(sphereData_test,2),1),sphereData_test']*beta{iRun};
     else
-       prediction{iRun} = zeros(size(sphereData_test,2),nPCsSeed);
-    end   
+       prediction_temp = zeros(size(sphereData_test,2),nPCsSeed);
+    end
+    prediction{iRun} = prediction_temp';
     
     % Evaluate quality of predictions using user-specified measures
-    for iMeasure = 1:length(parameters.measures)
+    for iMeasure = 1:length(parameters.measureHandle)
         results_temp{iMeasure}{iRun} = feval(parameters.measureHandle{iMeasure},prediction,data_y);
     end
     
 end
 
-for iMeasure = 1:length(parameters.measures)
-    results{iMeasure} = mean(results_temp{iMeasure});
+for iMeasure = 1:length(parameters.measureHandle)
+    results{iMeasure} = mean([results_temp{iMeasure}{:}]);
 end
 

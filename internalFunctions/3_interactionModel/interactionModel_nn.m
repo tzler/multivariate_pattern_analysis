@@ -1,4 +1,4 @@
-function prediction = interactionModel_nn(parameters,data_y,data_x)
+function results = interactionModel_nn(parameters,data_y,data_x)
 
 % data_x is the data used as independent variable
 % data_y is the data used as dependent variable
@@ -19,15 +19,15 @@ for iRun = 1:nRuns
     prediction{iRun} = net(data_x{iRun}.test);
     
     % Evaluate quality of predictions using user-specified measures
-    for iMeasure = 1:length(parameters.measures)
+    for iMeasure = 1:length(parameters.measureHandle)
         results_temp{iMeasure}{iRun} = feval(parameters.measureHandle{iMeasure},prediction,data_y);
     end
 
     clear('net','tr');
 end
 
-for iMeasure = 1:length(parameters.measures)
-    results{iMeasure} = mean(results_temp{iMeasure});
+for iMeasure = 1:length(parameters.measureHandle)
+    results{iMeasure} = mean([results_temp{iMeasure}{:}]);
 end
 
 

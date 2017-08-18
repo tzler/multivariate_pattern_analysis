@@ -60,9 +60,9 @@ for iRun=1:nRuns
     data_PCA{iRun}.weights = diag(S_roi(1:nPCs,1:nPCs));
     data_PCA{iRun}.V = V_roi(:,1:nPCs);%,zeros(size(V_roi,1),size(V_roi,2)-nPCs)];
     if isfield(data{iRun},'inverse')
-        data_mean{iRun}.inverse = data{iRun}.inverse;
-        data_mean{iRun}.inverse{end+1} = @(prediction) data_mean{iRun}.V*prediction';
+        data_PCA{iRun}.inverse = data{iRun}.inverse;
+        data_PCA{iRun}.inverse{end+1} = @(prediction) data_PCA{iRun}.V*prediction;
     else
-        data_mean{iRun}.inverse{1} = @(prediction) data_mean{iRun}.V*prediction';
+        data_PCA{iRun}.inverse{1} = @(prediction) data_PCA{iRun}.V*prediction;
     end
 end

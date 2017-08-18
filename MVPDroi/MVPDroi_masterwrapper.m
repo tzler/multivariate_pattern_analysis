@@ -50,16 +50,20 @@ Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare
 Cfg_MVPDroi.interactionModels(3).label = 'iconn_noLowPass';
 Cfg_MVPDroi.interactionModels(3).regionModel = 2;
 Cfg_MVPDroi.interactionModels(3).functionHandle = 'interactionModel_lin';
-Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';
-Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare';
-Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
-Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
+Cfg_MVPDroi.interactionModels(3).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDroi.interactionModels(3).parameters.measureHandle{2} = 'accuracy_rSquare';
+Cfg_MVPDroi.interactionModels(3).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
+Cfg_MVPDroi.interactionModels(3).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
 % non-linear multivariate connectivity
 for iNode = 1:10
     Cfg_MVPDroi.interactionModels(3+iNode).label = sprintf('mvpd_nnet%02d',iNode);
     Cfg_MVPDroi.interactionModels(3+iNode).regionModel = 2;
     Cfg_MVPDroi.interactionModels(3+iNode).functionHandle = 'interactionModel_nn';
     Cfg_MVPDroi.interactionModels(3+iNode).parameters.nNodes = iNode;
+    Cfg_MVPDroi.interactionModels(3+iNode).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDroi.interactionModels(3+iNode).parameters.measureHandle{2} = 'accuracy_rSquare';
+Cfg_MVPDroi.interactionModels(3+iNode).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
+Cfg_MVPDroi.interactionModels(3+iNode).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
 end
 
 % ######### Set output folders ########
