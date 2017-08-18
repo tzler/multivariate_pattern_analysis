@@ -26,4 +26,10 @@ for iRun=1:nRuns
     data_PCA{iRun}.test_voxelSpace = data_center{iRun}; % keep the original data 
     data_PCA{iRun}.weights = S_roi(iPC,iPC);
     data_PCA{iRun}.V = V_roi(:,iPC);%,zeros(size(V_roi,1),size(V_roi,2)-nPCs)];
+    if isfield(data{iRun},'inverse')
+        data_mean{iRun}.inverse = data{iRun}.inverse;
+        data_mean{iRun}.inverse{end+1} = @(prediction) data_mean{iRun}.V*prediction';
+    else
+        data_mean{iRun}.inverse{1} = @(prediction) data_mean{iRun}.V*prediction';
+    end
 end

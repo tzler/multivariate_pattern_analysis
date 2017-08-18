@@ -25,9 +25,9 @@ for iRun = 1:nRuns
     % individual voxels timecourses.
     if isfield(data{iRun},'inverse')
         data_mean{iRun}.inverse = data{iRun}.inverse;
-        data_mean{iRun}.inverse{end+1} = @(prediction) prediction*data_mean{iRun}.V';
+        data_mean{iRun}.inverse{end+1} = @(prediction) data_mean{iRun}.V*prediction';
     else
-        data_mean{iRun}.inverse{1} = @(prediction) prediction*data_mean{iRun}.V';
+        data_mean{iRun}.inverse{1} = @(prediction) data_mean{iRun}.V*prediction';
     end
 end
 

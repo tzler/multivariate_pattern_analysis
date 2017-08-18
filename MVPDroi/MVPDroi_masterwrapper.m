@@ -26,14 +26,11 @@ Cfg_MVPDroi.regionModels(1).steps(1).functionHandle = 'regionModel_mean';
 Cfg_MVPDroi.regionModels(1).steps(2).functionHandle = 'regionModel_lowPass';
 Cfg_MVPDroi.regionModels(1).steps(2).parameters.lowPassFrequencyHz = 0.1;
 Cfg_MVPDroi.regionModels(1).steps(2).parameters.TR = 2;
-% preprocessing without low pass filtering
-Cfg_MVPDroi.regionModels(2).label = 'mean_noLowPass';
-Cfg_MVPDroi.regionModels(2).steps(1).functionHandle = 'regionModel_mean_traintest';
-% preprocessing without low pass filtering
-Cfg_MVPDroi.regionModels(3).label = 'PCA_noLowPass';
-Cfg_MVPDroi.regionModels(3).steps(1).functionHandle = 'regionModel_indepPCA_BIC_weights_V';
-Cfg_MVPDroi.regionModels(3).steps(1).parameters.minPCs = 3;
-Cfg_MVPDroi.regionModels(3).steps(1).parameters.maxPCs = 10;
+% multivariate region model
+Cfg_MVPDroi.regionModels(2).label = 'PCA_noLowPass';
+Cfg_MVPDroi.regionModels(2).steps(1).functionHandle = 'regionModel_indepPCA_BIC_weights_V';
+Cfg_MVPDroi.regionModels(2).steps(1).parameters.minPCs = 3;
+Cfg_MVPDroi.regionModels(2).steps(1).parameters.maxPCs = 10;
 
 % ############# Interaction Models #############
 % functional connectivity with low-pass
@@ -51,7 +48,7 @@ Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';
 Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare';
 % linear multivariate connectivity
 Cfg_MVPDroi.interactionModels(3).label = 'iconn_noLowPass';
-Cfg_MVPDroi.interactionModels(3).regionModel = 3;
+Cfg_MVPDroi.interactionModels(3).regionModel = 2;
 Cfg_MVPDroi.interactionModels(3).functionHandle = 'interactionModel_lin';
 Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';
 Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{2} = 'accuracy_rSquare';
@@ -60,7 +57,7 @@ Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{4} = 'accuracy_varexpl
 % non-linear multivariate connectivity
 for iNode = 1:10
     Cfg_MVPDroi.interactionModels(3+iNode).label = sprintf('mvpd_nnet%02d',iNode);
-    Cfg_MVPDroi.interactionModels(3+iNode).regionModel = 3;
+    Cfg_MVPDroi.interactionModels(3+iNode).regionModel = 2;
     Cfg_MVPDroi.interactionModels(3+iNode).functionHandle = 'interactionModel_nn';
     Cfg_MVPDroi.interactionModels(3+iNode).parameters.nNodes = iNode;
 end

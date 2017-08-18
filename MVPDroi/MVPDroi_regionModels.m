@@ -1,6 +1,7 @@
 function MVPDroi_regionModels(cfgPath,iSubject)
 
 % This function estimates the region models for participant iSubject
+% IMPORTANT: all data are expressed in format nVoxels x nTimepoints
 
 % ########### Set paths ##########
 load(cfgPath);

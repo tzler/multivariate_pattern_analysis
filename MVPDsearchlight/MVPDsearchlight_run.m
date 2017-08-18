@@ -1,4 +1,4 @@
-function runSearchlight(iSubject)
+function MVPDsearchlight_run(iSubject)
 
 %% Initialize general parameters
 
@@ -88,4 +88,4 @@ Cfg_searchlight.outputPath = '/mindhive/saxelab3/anzellotti/facesViewpoint/searc
 
 
 % ######## Run ########
-mvpc_searchlight_only(Cfg_searchlight,Cfg_smoothing)
+MVPDsearchlight_main(Cfg_searchlight,Cfg_smoothing)
