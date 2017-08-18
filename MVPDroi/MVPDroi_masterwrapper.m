@@ -44,7 +44,7 @@ Cfg_MVPDroi.interactionModels(1).parameters.measureHandle{1} = 'accuracy_corr';
 Cfg_MVPDroi.interactionModels(1).parameters.measureHandle{2} = 'accuracy_rSquare';
 % functional connectivity without low-pass filtering
 Cfg_MVPDroi.interactionModels(2).label = 'fconn_noLowPass';
-Cfg_MVPDroi.interactionModels(2).regionModel = 2;
+Cfg_MVPDroi.interactionModels(2).regionModel = 1;
 Cfg_MVPDroi.interactionModels(2).functionHandle = 'interactionModel_correlation';
 Cfg_MVPDroi.interactionModels(2).functionHandle = 'interactionModel_y_equal_x';
 Cfg_MVPDroi.interactionModels(2).parameters.measureHandle{1} = 'accuracy_corr';

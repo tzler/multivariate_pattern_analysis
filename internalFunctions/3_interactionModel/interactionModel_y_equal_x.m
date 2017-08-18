@@ -12,13 +12,13 @@ for iRun = 1:nRuns
     prediction{iRun} = data_x{iRun}.test;
     
     % Evaluate quality of predictions using user-specified measures
-    for iMeasure = 1:length(parameters.measures)
+    for iMeasure = 1:length(parameters.measureHandle)
         results_temp{iMeasure}{iRun} = feval(parameters.measureHandle{iMeasure},prediction,data_y);
     end
     
 end
 
-for iMeasure = 1:length(parameters.measures)
-    results{iMeasure} = mean(results_temp{iMeasure});
+for iMeasure = 1:length(parameters.measureHandle)
+    results{iMeasure} = mean([results_temp{iMeasure}{:}]);
 end
 

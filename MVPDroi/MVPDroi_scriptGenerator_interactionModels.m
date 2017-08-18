@@ -59,7 +59,7 @@ for iSubject = 1:nSubjects
         fid = fopen(scriptName,'wt');
         fprintf(fid,'function  %s',scriptName(1:end-2));
         fprintf(fid,'\n cd(''%s'')', mvpcDir);
-        fprintf(fid,'\n MVPDroi_interactionModels(''%s'',%d,%d)',productsDir,iSubject,iAnalysis);
+        fprintf(fid,'\n MVPDroi_interactionModels(''%s'',%d,%d)',cfgPath,iSubject,iAnalysis);
         fclose(fid);
     end
 end
