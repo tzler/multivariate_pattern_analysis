@@ -6,8 +6,6 @@ Cfg_searchlight.dataInfo.project = '/mindhive/saxelab3/anzellotti/facesVoices_ar
 % ######## Specify library paths ########
 Cfg_searchlight.libraryPaths.spm12 = '/mindhive/saxelab3/anzellotti/software/spm12';
 Cfg_searchlight.libraryPaths.mrtools = '/mindhive/saxelab3/anzellotti/facesViewpoint/MVPC_scripts_revision/mvpc_searchlight_2016_12';
-Cfg_searchlight.libraryPaths.signal = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/signal/signal';
-Cfg_searchlight.libraryPaths.stats = '/mindhive/saxelab3/anzellotti/software/MATLAB/R2015a/toolbox/stats/stats';
 addpath(genpath(Cfg_searchlight.libraryPaths.mrtools));
 
 % ######## Provide subject information ########

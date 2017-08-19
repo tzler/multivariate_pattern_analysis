@@ -9,7 +9,7 @@ for iNode = 1:nNodes
 nTasks = min(parameters.slurm.cores_per_node,nSubjects*nAnalyses-(iNode-1)*parameters.slurm.cores_per_node);
 
 cd(scriptDir);
-fid = fopen(sprintf('sbatch_newMvpc_parallel_searchlight_%d.sh',iNode),'wt');
+fid = fopen(sprintf('sbatch_MVPDsearchlight_parallel_%d.sh',iNode),'wt');
 
 fprintf(fid,'#!/bin/bash\n');
 fprintf(fid,'#SBATCH --job-name=%s\n', parameters.slurm.name);  % Project Name
@@ -23,8 +23,8 @@ fprintf(fid,'module add openmpi/gcc/64/1.8.1\n');
 fprintf(fid,'module add mit/matlab/2015a\n');
 fprintf(fid,'cd %s\n',scriptDir);
 fprintf(fid,'\n');
-fprintf(fid,'chmod +x sbatch_newMvpc_single_searchlight_%d.sh\n',iNode);
-fprintf(fid,'mpiexec -n %d ./sbatch_newMvpc_single_searchlight_%d.sh',nTasks,iNode);
+fprintf(fid,'chmod +x sbatch_MVPDsearchlight_single_%d.sh\n',iNode);
+fprintf(fid,'mpiexec -n %d ./sbatch_MVPDsearchlight_single_%d.sh',nTasks,iNode);
 
 fclose(fid);
 
@@ -32,11 +32,11 @@ fclose(fid);
 %% Single file
 
 cd(scriptDir);
-fid = fopen(sprintf('sbatch_newMvpc_single_searchlight_%d.sh',iNode),'wt');
+fid = fopen(sprintf('sbatch_MVPDsearchlight_single_%d.sh',iNode),'wt');
     
 fprintf(fid,'#!/bin/bash\n');
 fprintf(fid,'\n');
-fprintf(fid,['file_num=sbatch_newMvpc_searchlight_$(printf ' char(34) '%s' char(34) ' $(($OMPI_COMM_WORLD_RANK + 1 + %d)))\n'],'%03d',(iNode-1)*parameters.slurm.cores_per_node);
+fprintf(fid,['file_num=sbatch_MVPDsearchlight_mat_$(printf ' char(34) '%s' char(34) ' $(($OMPI_COMM_WORLD_RANK + 1 + %d)))\n'],'%03d',(iNode-1)*parameters.slurm.cores_per_node);
 fprintf(fid,['matlab -nodisplay -nosplash -singleCompThread -r ' char(34) '$file_num' char(34) '\n']);
 fprintf(fid,'exit\n');
 fprintf(fid,'\n');
@@ -49,11 +49,11 @@ end
 
 cd(scriptDir);
 for iSubject = 1:nSubjects
-        scriptName = sprintf('sbatch_newMvpc_searchlight_%03d.m',iSubject);
+        scriptName = sprintf('sbatch_MVPDsearchlight_mat_%03d.m',iSubject);
         fid = fopen(scriptName,'wt');
         fprintf(fid,'function  %s',scriptName(1:end-2));
         fprintf(fid,'\n cd(''%s'')', mvpcDir);
-        fprintf(fid,'\n runSearchlight_viewpoint(%d)',iSubject);
+        fprintf(fid,'\n MVPDsearchlight_run(%d)',iSubject);
         fclose(fid);
 end
 
