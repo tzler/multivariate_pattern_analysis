@@ -26,7 +26,7 @@ fprintf(' Done.\n');
 %% Make output folders if needed
 fprintf('\nMaking output paths...');
 if exist(Cfg_MVPDsearchlight.outputPaths.results,'dir')~=7
-    fprintf('\nMaking region models folder at %s\n', Cfg_MVPDsearchlight.outputPaths.regionModels);
+    fprintf('\nMaking region models folder at %s\n', Cfg_MVPDsearchlight.outputPaths.results);
     try
         mkdir(Cfg_MVPDsearchlight.outputPaths.results);
     catch
