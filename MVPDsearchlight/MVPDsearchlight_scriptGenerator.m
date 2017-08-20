@@ -1,4 +1,4 @@
-function MVPDsearchlight_scriptGenerator(nSubjects,scriptDir,mvpcDir,parameters)
+function MVPDsearchlight_scriptGenerator(nSubjects,nAnalyses,scriptDir,mvpcDir,parameters)
 
 nNodes = ceil(nSubjects/parameters.slurm.cores_per_node);
 
