@@ -34,7 +34,7 @@ tic
 
 nSpheres = length(inputs.coordsSpheres);
 warning('off','all')
-for iSphere = 1:5000%nSpheres  % FOR DEBUGGING
+for iSphere = 1:nSpheres  % FOR DEBUGGING
     %% Extract sphere data
     thisSphere = inputs.coordsSpheres{iSphere};
     for iRun = 1:nRuns
@@ -75,7 +75,7 @@ toc
 warning('on','all')
 %% Reformat and save searchlight map
 linearIndexes = sub2ind(size(seed),inputs.I,inputs.J,inputs.K);
- linearIndexes = linearIndexes(1:661); % FOR DEBUGGING
+% linearIndexes = linearIndexes(1:661); % FOR DEBUGGING
 for iInteractionModel = 1:nInteractionModels
     nStatistics = length(r{iInteractionModel});
     for iStatistic = 1:nStatistics
