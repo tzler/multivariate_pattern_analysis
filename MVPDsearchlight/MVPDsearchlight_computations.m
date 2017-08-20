@@ -23,7 +23,7 @@ for iRegionModel = 1:nRegionModels
 		     regionModels_seed(iRegionModel) = regionModels(iRegionModel).seed;
 end
 for iRegionModel = 1:nRegionModels
-		     regionModels_spheres(iRegionModel) = regionModels(iRegionModel).spheres;
+		     regionModels_spheres(iRegionModel) = regionModels(iRegionModel).sphere;
 end
 preprocessedData_seed = MVPDsearchlight_applyRegionModels(data_seed,regionModels_seed);
 clear('data_seed');
@@ -34,7 +34,7 @@ tic
 
 nSpheres = length(inputs.coordsSpheres);
 warning('off','all')
-for iSphere = 1:nSpheres  % FOR DEBUGGING
+for iSphere = 1:5000%nSpheres  % FOR DEBUGGING
     %% Extract sphere data
     thisSphere = inputs.coordsSpheres{iSphere};
     for iRun = 1:nRuns
@@ -75,14 +75,14 @@ toc
 warning('on','all')
 %% Reformat and save searchlight map
 linearIndexes = sub2ind(size(seed),inputs.I,inputs.J,inputs.K);
-% linearIndexes = linearIndexes(1:100); % FOR DEBUGGING
+ linearIndexes = linearIndexes(1:661); % FOR DEBUGGING
 for iInteractionModel = 1:nInteractionModels
     nStatistics = length(r{iInteractionModel});
     for iStatistic = 1:nStatistics
     searchlightMap3D_r = zeros(size(seed));
-    searchlightMap3D_r(linearIndexes) = r{iInteractionModel}{iStatistic};
+    searchlightMap3D_r(linearIndexes) = [r{iInteractionModel}{iStatistic}{:}];
     vol_write = spm_vol(subject.functionalPaths{1}{1});
-    fname = sprintf('analysis%d_stat%d_sub%02d.img',iInteractionModel,iStatistic,subject.ID);
+    fname = sprintf('analysis%d_stat%d_sub%s.img',iInteractionModel,iStatistic,subject.ID);
     vol_write.fname = fname;
     dataType = spm_type('float32');
     vol_write.dt(1) = dataType;

@@ -1,4 +1,4 @@
-function preprocessedData = mvpc_applyRegionModels(data,regionModels)
+function preprocessedData = MVPDsearchlight_applyRegionModels(data,regionModels)
 
 nRegionModels = length(regionModels);
 for iRegionModel = 1:nRegionModels
