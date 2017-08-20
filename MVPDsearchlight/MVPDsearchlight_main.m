@@ -1,4 +1,4 @@
-function MVPDsearchlight_main(Cfg_searchlight,Cfg_smoothing)
+function MVPDsearchlight_main(Cfg_searchlight)
 
 
 nSubjects = length(Cfg_searchlight.dataInfo.subjects);

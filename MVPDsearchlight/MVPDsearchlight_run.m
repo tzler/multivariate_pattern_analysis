@@ -74,4 +74,4 @@ Cfg_MVPDsearchlight.searchlightInfo.compcorr.nPCs = 5;
 MVPDsearchlight_setenv(Cfg_MVPDsearchlight);
 
 % ######## Run ########
-MVPDsearchlight_main(Cfg_searchlight,Cfg_smoothing)
+MVPDsearchlight_main(Cfg_searchlight)
