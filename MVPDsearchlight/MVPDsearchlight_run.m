@@ -19,16 +19,18 @@ Cfg_MVPDsearchlight.preprocModels.steps(3).functionHandle = 'loadDenoise_globalS
 Cfg_MVPDsearchlight.preprocModels.steps(4).functionHandle = 'loadDenoise_motionParameters';
 
 % region model with low pass filtering
-Cfg_MVPDsearchlight.regionModels(1).label = 'mean_lowPass0.1';
-Cfg_MVPDsearchlight.regionModels(1).steps(1).functionHandle = 'regionModel_mean';
-Cfg_MVPDsearchlight.regionModels(1).steps(2).functionHandle = 'regionModel_lowPass';
-Cfg_MVPDsearchlight.regionModels(1).steps(2).parameters.lowPassFrequencyHz = 0.1;
-Cfg_MVPDsearchlight.regionModels(1).steps(2).parameters.TR = 2;
+Cfg_MVPDsearchlight.regionModels(1).seed.label = 'mean_lowPass0.1';
+Cfg_MVPDsearchlight.regionModels(1).seed.steps(1).functionHandle = 'regionModel_mean';
+Cfg_MVPDsearchlight.regionModels(1).seed.steps(2).functionHandle = 'regionModel_lowPass';
+Cfg_MVPDsearchlight.regionModels(1).seed.steps(2).parameters.lowPassFrequencyHz = 0.1;
+Cfg_MVPDsearchlight.regionModels(1).seed.steps(2).parameters.TR = 2;
+Cfg_MVPDsearchlight.regionModels(1).sphere = Cfg_MVPDsearchlight.regionModels(1).seed;
 % multivariate region model
-Cfg_MVPDsearchlight.regionModels(2).label = 'PCA_noLowPass';
-Cfg_MVPDsearchlight.regionModels(2).steps(1).functionHandle = 'regionModel_indepPCA_BIC_weights_V';
-Cfg_MVPDsearchlight.regionModels(2).steps(1).parameters.minPCs = 3;
-Cfg_MVPDsearchlight.regionModels(2).steps(1).parameters.maxPCs = 10;
+Cfg_MVPDsearchlight.regionModels(2).seed.label = 'PCA_noLowPass';
+Cfg_MVPDsearchlight.regionModels(2).seed.steps(1).functionHandle = 'regionModel_indepPCA_BIC_weights_V';
+Cfg_MVPDsearchlight.regionModels(2).seed.steps(1).parameters.minPCs = 3;
+Cfg_MVPDsearchlight.regionModels(2).seed.steps(1).parameters.maxPCs = 10
+Cfg_MVPDsearchlight.regionModels(2).sphere = Cfg_MVPDsearchlight.regionModels(2).seed;
 
 
 % ############# Interaction Models #############
