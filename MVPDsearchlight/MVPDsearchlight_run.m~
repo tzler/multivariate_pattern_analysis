@@ -71,7 +71,7 @@ Cfg_MVPDsearchlight.searchlightInfo.sphereRadius = 6; % radius in mm
 Cfg_MVPDsearchlight.searchlightInfo.compcorr.nPCs = 5;
 
 % ######## Check file existence, make output directories, save Cfg file ########
-   MVPDsearchlight_setenv(Cfg_MVPDsearchlight);
+  MVPDsearchlight_setenv(Cfg_MVPDsearchlight);
 
 % ######## Run ########
 MVPDsearchlight_main(Cfg_MVPDsearchlight)

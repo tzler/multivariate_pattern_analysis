@@ -1,4 +1,4 @@
-function mvpc_searchlight_singleSub(subject,searchlightInfo,preprocModels,regionModels,interactionModels,outputPath)
+function MVPDsearchlight_singleSub(subject,searchlightInfo,preprocModels,regionModels,interactionModels,outputPath)
 
 tic
 

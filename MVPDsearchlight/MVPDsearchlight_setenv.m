@@ -26,11 +26,11 @@ fprintf(' Done.\n');
 %% Make output folders if needed
 fprintf('\nMaking output paths...');
 if exist(Cfg_MVPDsearchlight.outputPaths.results,'dir')~=7
-    fprintf('\nMaking region models folder at %s\n', Cfg_MVPDsearchlight.outputPaths.results);
+    fprintf('\nMaking results folder at %s\n', Cfg_MVPDsearchlight.outputPaths.results);
     try
         mkdir(Cfg_MVPDsearchlight.outputPaths.results);
     catch
-        fprintf('\nCould not create region models folder. Check permissions.\n');
+        fprintf('\nCould not create results folder. Check permissions.\n');
         exit_script = 1;
     end
 end
@@ -48,7 +48,7 @@ fprintf(' Done.\n');
 %% Save Cfg file
 fprintf('\nSaving Cfg file...');
 try
-save(Cfg_MVPDsearchlight.outputPaths.cfgPath,sprintf('Cfg_MVPDsearchlight_%d',Cfg_MVPDsearchlight.dataInfo.subjects(1).ID),'-v7.3');
+save(Cfg_MVPDsearchlight.outputPaths.cfgPath,'Cfg_MVPDsearchlight','-v7.3');
     fprintf(' Done.\n');
 catch
     fprintf('Could not save Cfg file. Check permissions.');
