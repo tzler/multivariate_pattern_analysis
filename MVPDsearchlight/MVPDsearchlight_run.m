@@ -48,14 +48,14 @@ Cfg_MVPDsearchlight.interactionModels(2).parameters.measureHandle{3} = 'accuracy
 Cfg_MVPDsearchlight.interactionModels(2).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
 % non-linear multivariate connectivity
 for iNode = 1:1
-    Cfg_MVPDsearchlight.interactionModels(3+iNode).label = sprintf('mvpd_nnet%02d',iNode);
-    Cfg_MVPDsearchlight.interactionModels(3+iNode).regionModel = 2;
-    Cfg_MVPDsearchlight.interactionModels(3+iNode).functionHandle = 'interactionModel_nn';
-    Cfg_MVPDsearchlight.interactionModels(3+iNode).parameters.nNodes = iNode;
-    Cfg_MVPDsearchlight.interactionModels(3+iNode).parameters.measureHandle{1} = 'accuracy_corr';
-Cfg_MVPDsearchlight.interactionModels(3+iNode).parameters.measureHandle{2} = 'accuracy_rSquare';
-Cfg_MVPDsearchlight.interactionModels(3+iNode).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
-Cfg_MVPDsearchlight.interactionModels(3+iNode).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
+    Cfg_MVPDsearchlight.interactionModels(2+iNode).label = sprintf('mvpd_nnet%02d',iNode);
+    Cfg_MVPDsearchlight.interactionModels(2+iNode).regionModel = 2;
+    Cfg_MVPDsearchlight.interactionModels(2+iNode).functionHandle = 'interactionModel_nn';
+    Cfg_MVPDsearchlight.interactionModels(2+iNode).parameters.nNodes = iNode;
+    Cfg_MVPDsearchlight.interactionModels(2+iNode).parameters.measureHandle{1} = 'accuracy_corr';
+Cfg_MVPDsearchlight.interactionModels(2+iNode).parameters.measureHandle{2} = 'accuracy_rSquare';
+Cfg_MVPDsearchlight.interactionModels(2+iNode).parameters.measureHandle{3} = 'accuracy_varexpl_vox_mean';
+Cfg_MVPDsearchlight.interactionModels(2+iNode).parameters.measureHandle{4} = 'accuracy_varexpl_ledoitWolf';
 end
 
 % ######### Set output folders ########
