@@ -1,1 +1,1 @@
-# multivariate_pattern_analysis
+# multivariate_pattern_dependence
