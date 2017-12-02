@@ -1,0 +1,13 @@
+To paralyze subjects using slurm
+
+1) Run preprocessing to prepare data (https://bitbucket.org/saxe/preproctoolsspm)
+2) Run project wrapper with ‘runAnalysis = false’; to generate sbatch scripts
+3) Run slurm via ‘sbatch sbatch_parallel.sh’ 
+4) Run ‘sbatch_mergeSubjectVars’ to generate composite results variable
+
+
+To run subjects in serial using nohup
+
+1) Run preprocessing to prepare data (https://bitbucket.org/saxe/preproctoolsspm)
+2) Set project wrapper to ‘runAnalysis = true;’ to run analysis in serial
+3) Run ‘bash ./run_nohup.sh’
