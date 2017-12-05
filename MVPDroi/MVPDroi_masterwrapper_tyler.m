@@ -3,14 +3,17 @@
 % Then, it loads the results to the workspace.
 
 %% Initialize general parameters
+scriptDir = '/mindhive/saxelab2/tyler/mvpd/MVPDroi'; 
+mvpdDir = scriptDir; 
 
 % ######## Specify and add library paths ########
-Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab2/tyler/mvpd'  % saxelab3/anzellotti/github_repos/mvpd';
-Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab2/tyler/mvpd/software/spm12 ' % saxelab3/anzellotti/software/spm12';
+Cfg_MVPDroi.libraryPaths.mvpd = '/mindhive/saxelab2/tyler/mvpd';   % saxelab3/anzellotti/github_repos/mvpd';
+Cfg_MVPDroi.libraryPaths.spm12 = '/mindhive/saxelab2/tyler/mvpd/software/spm12'; % saxelab3/anzellotti/software/spm12';
 addpath(genpath(Cfg_MVPDroi.libraryPaths.mvpd));
 
 % ########## Specify inputs ###########
-Cfg_MVPDroi.dataInfo.subjects = generateFullDataPaths_tyler;
+tmpVar = load('pregenerated_subject_path_info.mat'); % generated with generateFullDataPaths.m in this folder
+Cfg_MVPDroi.dataInfo.subjects = tmpVar.subjectInfo(1:5) ;
 
 % ######## Preprocessing and region models #######
 % preprocessing model
@@ -60,7 +63,7 @@ Cfg_MVPDroi.interactionModels(2+iNode).parameters.measureHandle{4} = 'accuracy_v
 end
 
 % ######### Set output folders ########
-output_main =  '/mindhive/saxelab3/anzellotti/facesVoices_art2/MVPDtests';
+output_main = '/mindhive/saxelab2/tyler/mvpd/MVPDroi/roi_test' 
 Cfg_MVPDroi.outputPaths.regionModels = fullfile(output_main,'regionModels');
 Cfg_MVPDroi.outputPaths.interactionModels = fullfile(output_main,'interactionModels');
 Cfg_MVPDroi.outputPaths.products = fullfile(output_main,'products');
@@ -73,47 +76,46 @@ MVPDroi_setenv(Cfg_MVPDroi);
 
 nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
 mvpdDir = fullfile(Cfg_MVPDroi.libraryPaths.mvpd,'MVPDroi');
-parameters.slurm.name = 'MVPDroi_rModels_facesVoices';
+parameters.slurm.name = 'mvpd_kids_test_preprocessing';
 parameters.slurm.time = 5; % time in days
 parameters.slurm.mem_per_cpu = 8192;
-parameters.slurm.email = 'anzellot@mit.edu';
+parameters.slurm.email = 'bonnen@mit.edu';
 
 MVPDroi_scriptGenerator_regionModels(nSubjects,Cfg_MVPDroi.outputPaths,mvpdDir,parameters);
 
 %% Submit to queue
-
-system(sprinft('cd %s', scriptDir));
+fprintf('SUBMIT TO QUEUE START\n')
+system(sprintf('cd %s', scriptDir));
 for iSubject = 1:nSubjects
-    system(sprintf('sbatch sbatch_MVPDroi_rModels_%02d.sh',iJob));
+    system(sprintf('sbatch sbatch_MVPDroi_rModels_%02d.sh',iSubject));
 end
+fprintf('SUBMIT TO QUEUE END\n') 
 
 %% Make parallel scripts for interaction models
-
-nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
-nAnalyses = length(Cfg_MVPDroi.interactionModels);
-mvpdDir = fullfile(Cfg_MVPDroi.libraryPaths.mvpd,'MVPDroi');
-parameters.slurm.name = 'MVPDroi_iModels_facesVoices';
-parameters.slurm.cores_per_node = 5;
-parameters.slurm.cpus_per_task = 1;
-parameters.slurm.mem_per_cpu = 10240;
-parameters.slurm.email = 'anzellot@mit.edu';
-
-MVPDroi_scriptGenerator_interactionModels(nSubjects,nAnalyses,Cfg_MVPDroi.outputPaths,mvpdDir,parameters);
-
+%
+% nSubjects = length(Cfg_MVPDroi.dataInfo.subjects);
+% nAnalyses = length(Cfg_MVPDroi.interactionModels);
+% mvpdDir = fullfile(Cfg_MVPDroi.libraryPaths.mvpd,'MVPDroi');
+% parameters.slurm.name = 'mvpd_kids_test_models';
+% parameters.slurm.cores_per_node = 5;
+% parameters.slurm.cpus_per_task = 1;
+% parameters.slurm.mem_per_cpu = 10240;
+% parameters.slurm.email = 'bonnen@mit.edu';
+% 
+% MVPDroi_scriptGenerator_interactionModels(nSubjects,nAnalyses,Cfg_MVPDroi.outputPaths,mvpdDir,parameters);
+% 
 %% Submit to queue
-
-system(sprinft('cd %s', scriptDir));
-for iJob = 1:nSubjects*nAnalyses
-    system(sprintf('sbatch sbatch_newMvpd_parallel_interactions_%d.sh',iJob));
-end
-
+% 
+% system(sprintf('cd %s', scriptDir));
+% for iJob = 1:nSubjects*nAnalyses
+%     system(sprintf('sbatch sbatch_newMvpd_parallel_interactions_%d.sh',iJob));
+% end
+% 
 %% Load the results
 
 % ######## Read the selected number of dimensions for PCA models ########
-nDims = MVPDroi_readDimsPCA(Cfg_MVPDroi.outputPaths.cfgPath);
-
+% nDims = MVPDroi_readDimsPCA(Cfg_MVPDroi.outputPaths.cfgPath);
+% 
 % ######## Load the dependence matrices ########
 
 
-
- 
